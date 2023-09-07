@@ -24,53 +24,53 @@ public class Fish {
     @Column(name = "commonName")
     private String commonName;
     @Column(name = "scientificName")
-    private String scientificName;
+    private String scientificName = "";
     @Column(name = "speciesGroup")
-    private String speciesGroup;
+    private String speciesGroup = "";
     @Column(name = "careLevel")
-    private char careLevel;
+    private char careLevel = 'n';
     @Column(name = "averageSize")
     private int averageSize;
     @Column(name = "lifespan")
-    private double lifespan;
+    private Double lifespan;
 
     @Column(name = "phLow")
-    private double phLow;
+    private Double phLow;
     @Column(name = "phHigh")
-    private double phHigh;
+    private Double phHigh;
 
     @Column(name = "tempLow")
-    private double tempLow;
+    private Double tempLow;
     @Column(name = "tempHigh")
-    private double tempHigh;
+    private Double tempHigh;
 
     @Column(name = "hardLow")
-    private double hardLow;
+    private Double hardLow;
     @Column(name = "hardHigh")
-    private double hardHigh;
+    private Double hardHigh;
 
     @Column(name = "swimmingLevel")
     private char swimmingLevel;
     @Column(name = "ownAggressiveness")
-    private boolean isAggressiveSelf;
+    private boolean isAggressiveSelf = false;
     @Column(name = "otherAggressiveness")
-    private boolean isAggressiveOther;
+    private boolean isAggressiveOther = false;
     @Column(name = "idealNumber")
     private int idealNumber;
     @Column(name = "livePlants")
-    private boolean livePlants;
+    private boolean livePlants = false;
     @Column(name = "foodType")
-    private String foodType;
+    private String foodType = "";
     @Column(name = "foodOptions")
-    private String foodOptions;
+    private String foodOptions = "";
     @Column(name = "substrate")
-    private String substrate;
+    private String substrate = "";
     @Column(name = "light")
-    private char light;
+    private char light = 'n';
     @Column(name = "current")
-    private char current;
+    private char current = 'n';
     @Column(name = "decorations")
-    private char decorations;
+    private char decorations = 'n';
     @Column(name = "tankSize")
     private int minimumTankSize;
 
@@ -78,8 +78,8 @@ public class Fish {
     }
 
     public Fish(String commonName, String scientificName, String speciesGroup, char careLevel, int averageSize,
-            double lifespan, double phLow, double phHigh, double tempLow, double tempHigh, double hardLow,
-            double hardHigh, char swimmingLevel, boolean isAggressiveSelf, boolean isAggressiveOther, int idealNumber,
+            Double lifespan, Double phLow, Double phHigh, Double tempLow, Double tempHigh, Double hardLow,
+            Double hardHigh, char swimmingLevel, boolean isAggressiveSelf, boolean isAggressiveOther, int idealNumber,
             boolean livePlants, String foodType, String foodOptions, String substrate, char light, char current,
             char decorations, int minimumTankSize) {
         this.commonName = commonName;
@@ -148,59 +148,59 @@ public class Fish {
         this.averageSize = averageSize;
     }
 
-    public double getLifespan() {
+    public Double getLifespan() {
         return this.lifespan;
     }
 
-    public void setLifespan(double lifespan) {
+    public void setLifespan(Double lifespan) {
         this.lifespan = lifespan;
     }
 
-    public double getPhLow() {
+    public Double getPhLow() {
         return this.phLow;
     }
 
-    public void setPhLow(double phLow) {
+    public void setPhLow(Double phLow) {
         this.phLow = phLow;
     }
 
-    public double getPhHigh() {
+    public Double getPhHigh() {
         return this.phHigh;
     }
 
-    public void setPhHigh(double phHigh) {
+    public void setPhHigh(Double phHigh) {
         this.phHigh = phHigh;
     }
 
-    public double getTempLow() {
+    public Double getTempLow() {
         return this.tempLow;
     }
 
-    public void setTempLow(double tempLow) {
+    public void setTempLow(Double tempLow) {
         this.tempLow = tempLow;
     }
 
-    public double getTempHigh() {
+    public Double getTempHigh() {
         return this.tempHigh;
     }
 
-    public void setTempHigh(double tempHigh) {
+    public void setTempHigh(Double tempHigh) {
         this.tempHigh = tempHigh;
     }
 
-    public double getHardLow() {
+    public Double getHardLow() {
         return this.hardLow;
     }
 
-    public void setHardLow(double hardLow) {
+    public void setHardLow(Double hardLow) {
         this.hardLow = hardLow;
     }
 
-    public double getHardHigh() {
+    public Double getHardHigh() {
         return this.hardHigh;
     }
 
-    public void setHardHigh(double hardHigh) {
+    public void setHardHigh(Double hardHigh) {
         this.hardHigh = hardHigh;
     }
 
