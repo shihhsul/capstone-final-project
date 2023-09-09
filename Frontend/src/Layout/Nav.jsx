@@ -12,17 +12,27 @@ const Nav = () => {
         <ul className='list-none m-0 p-0 flex items-baseline'>
           <li className='ml-10'></li>
           <li className='ml-5'>
-            <Link to='/'>
-              <a className='text-2xl text-white font-bold no-underline hover:opacity-80'>
-                Main
-              </a>
+            <Link
+              className='text-2xl text-white font-bold no-underline hover:opacity-80'
+              to='/'
+            >
+              Main
             </Link>
           </li>
           <li className='ml-5'>
-            <Link to='/Test'>
-              <a className='text-2xl text-white font-bold no-underline hover:opacity-80'>
-                Test
-              </a>
+            <Link
+              className='text-2xl text-white font-bold no-underline hover:opacity-80'
+              to='/Test'
+            >
+              Test
+            </Link>
+          </li>
+          <li className='ml-5'>
+            <Link
+              className='text-2xl text-white font-bold no-underline hover:opacity-80'
+              to='/Login'
+            >
+              Login
             </Link>
           </li>
         </ul>
