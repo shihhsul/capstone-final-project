@@ -1,44 +1,43 @@
 import React, { useState } from "react";
-import { Link, } from "react-router-dom";
-import { useNavigate} from 'react-router-dom'
-
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Register = (props) => {
-
   const history = useNavigate;
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [name, setName] = useState("");
 
-  const handleSubmit = async  (e) => {
+  const handleSubmit = async (e) => {
+    console.log(13, "is this thing on");
     e.preventDefault();
     try {
-      const response = await fetch('https://your-api.com/register', {  // need to set to our api link but it currently isnt working for me
-        method: 'POST',
+      const response = await fetch("https://localhost:5173/new", {
+        // need to set to our api link but it currently isnt working for me
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password: pass, name }),
       });
-  
+
       if (response.ok) {
-        const data = await response.json();
-        // Takes user back to main page and displays the name they inputted. 
+        await response.json();
+        // Takes user back to main page and displays the name they inputted.
         history.push({
-          pathname: '/',
+          pathname: "/",
           state: { message: `Thanks for registering ${name}` },
         });
       } else {
         // Handle error, maybe set some state to show an error message
-        console.error('Registration failed'); // add an alert to tell user it errored 
+        console.error("Registration failed"); // add an alert to tell user it errored
       }
     } catch (error) {
       // If fetch itself fails
-      console.error('There was a problem with the registration request', error);
+      console.error("There was a problem with the registration request", error);
     }
-
-  }
+  };
   return (
     <>
       <div className='justify-center items-center flex min-h-screen text-center bg-h-14 bg-gradient-to-r from-purple-200 to-purple-900'>
@@ -93,6 +92,7 @@ export const Register = (props) => {
           <button
             className='text-white border p-1 m-1 rounded-md cursor-pointer hover:opacity-80'
             type='submit'
+            onClick={handleSubmit}
           >
             Register
           </button>

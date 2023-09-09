@@ -1,32 +1,33 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export const Login = (props) => {
-  const [email, setEmail ]= useState("");
-  const [ pass, setPass ] = useState("");
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
 
   const history = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('https://your-api.com/login', { // need to set to our api link but it currently isnt working for me 
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password: pass }), // stringify basically takes an object (email, pass, name) and converts to JSON-String
-  });
+    const response = await fetch("https://localhost:5173/users/login", {
+      // need to set to our api link but it currently isnt working for me
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password: pass }), // stringify basically takes an object (email, pass, name) and converts to JSON-String
+    });
 
-  if (response.ok) {
-    const data = await response.json();
-    localStorage.setItem('token', data.token); // not concrete not sure what to do yet 
-    history.push('/');
-  } else {
-    alert('Incorrect email or password!');
-  }
-};
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem("token", data.token); // not concrete not sure what to do yet
+      history.push("/");
+    } else {
+      alert("Incorrect email or password!");
+    }
+  };
 
   return (
     <>
