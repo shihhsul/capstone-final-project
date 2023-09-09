@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 export const Register = (props) => {
 
-  const histoy = useHistory;
+  const history = useHistory;
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
