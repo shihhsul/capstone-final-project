@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link, } from "react-router-dom";
-import { useHistory } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 
 
 export const Register = (props) => {
 
-  const history = useHistory;
+  const history = useNavigate;
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -41,7 +41,7 @@ export const Register = (props) => {
   }
   return (
     <>
-      <div className='justify-center items-center flex min-h-screen text-center bg-h-14 bg-gradient-to-r from-sky-300 to-indigo-700'>
+      <div className='justify-center items-center flex min-h-screen text-center bg-h-14 bg-gradient-to-r from-purple-200 to-purple-900'>
         <form
           className='flex flex-col p-20 border border-white rounded-md'
           onSubmit={handleSubmit}
