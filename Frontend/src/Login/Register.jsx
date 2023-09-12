@@ -1,40 +1,41 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 
 export const Register = (props) => {
-  const history = useNavigate;
+  const navigate = useNavigate(); 
 
-  const [email, setEmail] = useState("");
+  const [username, setUserName] = useState("");
   const [pass, setPass] = useState("");
-  const [name, setName] = useState("");
+  const [fullname, setFullName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
-    console.log(13, "is this thing on");
     e.preventDefault();
+
+    const userData = {
+      id: null,
+      userName: username,
+      password: pass,
+      fullName: fullname,
+      email: email,
+      aquariums: null,
+    };
+
     try {
-      const response = await fetch("https://localhost:5173/new", {
-        // need to set to our api link but it currently isnt working for me
+      const response = await fetch("http://127.0.0.1:8080/users/new", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password: pass, name }),
+        body: JSON.stringify(userData),
       });
 
       if (response.ok) {
-        await response.json();
-        // Takes user back to main page and displays the name they inputted.
-        history.push({
-          pathname: "/",
-          state: { message: `Thanks for registering ${name}` },
-        });
+        navigate("/", { state: { message: `Thanks for registering ${username}` } });
       } else {
-        // Handle error, maybe set some state to show an error message
-        console.error("Registration failed"); // add an alert to tell user it errored
+        console.error("Registration failed");
       }
     } catch (error) {
-      // If fetch itself fails
       console.error("There was a problem with the registration request", error);
     }
   };
@@ -48,15 +49,28 @@ export const Register = (props) => {
           <h2 className='justify-center items-center flex text-center text-white font-bold text-2xl m-2'>
             Register
           </h2>
+
+          <label className='text-left text-white p-1 rounded-sm'>
+            Username:
+          </label>
+          <input
+            className='m-1 rounded-md'
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
+            name='username'
+            id='username'
+            placeholder=' User Name'
+          ></input>
+
           <label className='text-left text-white p-1 rounded-sm'>
             Full Name:
           </label>
           <input
             className='m-1 rounded-md'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            name='name'
-            id='name'
+            value={fullname}
+            onChange={(e) => setFullName(e.target.value)}
+            name='fullname'
+            id='fullname'
             placeholder=' Full Name'
           ></input>
           <label

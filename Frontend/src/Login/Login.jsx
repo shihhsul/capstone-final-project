@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export const Login = (props) => {
-  const [email, setEmail] = useState("");
+  const [username, setusername] = useState("");
   const [pass, setPass] = useState("");
 
   const history = useNavigate();
@@ -11,21 +11,31 @@ export const Login = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://localhost:5173/users/login", {
-      // need to set to our api link but it currently isnt working for me
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password: pass }), // stringify basically takes an object (email, pass, name) and converts to JSON-String
-    });
+    const userData = {
+      id: null,
+      userName: username,
+      password: pass,
+      fullName: null,
+      email: null,
+      aquariums: null,
+    };
 
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem("token", data.token); // not concrete not sure what to do yet
-      history.push("/");
-    } else {
-      alert("Incorrect email or password!");
+    try {
+      const response = await fetch("http://127.0.0.1:8080/users/login", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+      //navigate("/", { state: { message: `Thanks for registering ${username}` } });
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("There was a problem with the login request", error);
     }
   };
 
@@ -41,18 +51,18 @@ export const Login = (props) => {
           </h2>
           <label
             className='text-left text-white p-1 rounded-sm'
-            htmlFor='email'
+            htmlFor='username'
           >
-            Email:
+            Username:
           </label>
           <input
             className='m-1 rounded-md'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type='email'
-            placeholder=' youremail@gmail.com'
-            id='email'
-            name='email'
+            value={username}
+            onChange={(e) => setusername(e.target.value)}
+            type='username'
+            placeholder=' username'
+            id='username'
+            name='username'
           ></input>
           <label className='text-left text-white p-1' htmlFor='password'>
             Password:

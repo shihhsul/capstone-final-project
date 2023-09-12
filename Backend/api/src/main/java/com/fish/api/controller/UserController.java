@@ -3,6 +3,8 @@ package com.fish.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +25,23 @@ public class UserController {
     UserService UserServ;
 
     @PostMapping("/new")
-    public void addUser(@RequestBody User User) {
+    public ResponseEntity<String> addUser(@RequestBody User User) {
         this.UserServ.createUser(User);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody User User) {
+        List<User> allUsers = this.UserServ.getAllUsers();
+        for (User currentUser : allUsers) {
+            if (currentUser.getUserName().equals(User.getUserName())) {
+                if (currentUser.getPassword().equals(User.getPassword())) {
+                    System.out.println("Login Succesful");
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/findall")
@@ -33,17 +50,17 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User findUserById(@PathVariable String id) {
+    public User findUserById(@PathVariable Long id) {
         return this.UserServ.getUserById(id);
     }
 
     @PutMapping("/modify/{id}")
-    public User modifyUser(@PathVariable String id, @RequestBody User updatedUser) {
+    public User modifyUser(@PathVariable Long id, @RequestBody User updatedUser) {
         return this.UserServ.updateUser(id, updatedUser);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void removeUser(@PathVariable String id) {
+    public void removeUser(@PathVariable Long id) {
         this.UserServ.deleteUserById(id);
     }
 }

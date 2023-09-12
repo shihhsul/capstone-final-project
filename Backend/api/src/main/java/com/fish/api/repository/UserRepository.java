@@ -7,6 +7,6 @@ import com.fish.api.entitity.Aquarium;
 import com.fish.api.entitity.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
 }

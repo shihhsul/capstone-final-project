@@ -31,7 +31,7 @@ public class UserService {
     /*
      * Gets a specific User by its id. The "R" (read) in CRUD
      */
-    public User getUserById(String id) {
+    public User getUserById(Long id) {
 
         Optional<User> user = UserRepo.findById(id);
         if (user.isPresent()) {
@@ -44,7 +44,7 @@ public class UserService {
      * Updates an existing User, found by a specific id. The "U" (update) in
      * CRUD
      */
-    public User updateUser(String id, User updateduser) {
+    public User updateUser(Long id, User updateduser) {
         User existinguser = getUserById(id);
 
         if (existinguser != null) {
@@ -61,7 +61,7 @@ public class UserService {
     /*
      * Delete a User from the repo. The "D" (delete) in CRUD
      */
-    public boolean deleteUserById(String id) {
+    public boolean deleteUserById(Long id) {
         if (UserRepo.existsById(id)) {
             UserRepo.deleteById(id);
             return true;
