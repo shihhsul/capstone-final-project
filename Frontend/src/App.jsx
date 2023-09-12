@@ -1,14 +1,34 @@
+import React from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import Layout from './Layout/Layout';
+import Main from './Pages/Main';
+import Test from './Pages/Test';
+import Auth from './Login/Auth'
+
 function App() {
+  const location = useLocation();
+
+  const isLoginPage = location.pathname === '/Login';
+
+  const RoutesWithOptionalLayout = () => (
+    <Routes>
+      <Route path='/' element={<Main />} />
+      <Route path='/Test' element={<Test />} />
+      <Route path='/Login' element={<Auth />} />
+    </Routes>
+  );
+
   return (
-    <div className='bg-indigo-600 min-h-screen'>
-      <div className='flex flex-col items-center pt-10'>
-        <h1 className='text-3xl font-medium text-white text-center'>
-          Added Tailwind Functionality To Our Project
-        </h1>
-        <span className='whitespace-pre'> </span>
-        <p className="text-white italic">Temporary Text</p>
-      </div>
-    </div>
-  )
+    <>
+      {isLoginPage ? (
+        <RoutesWithOptionalLayout />
+      ) : (
+        <Layout>
+          <RoutesWithOptionalLayout />
+        </Layout>
+      )}
+    </>
+  );
 }
+
 export default App;
