@@ -23,8 +23,26 @@ const Main = () => {
     // add stuff
   };
 
-  const handleDelete = () => {
-    // add stuff
+  const handleDelete = async() => {
+    try {
+      const response = await fetch("http://127.0.0.1:8080/aquariums/delete/"+selectedAquarium.name, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const updatedAquariums = userData.aquariums.filter(aquarium => aquarium !== selectedAquarium);
+        userData.aquariums=updatedAquariums;
+        navigate("/Main", {});
+        
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("There was a problem with the login request", error);
+    }
   };
 
   const handleDialogClose = () => {
@@ -42,7 +60,7 @@ const Main = () => {
         fishSchools: null,
       };
 
-      const response = await fetch("http://127.0.0.1:8080/aquariums/new/marsandnoa", {
+      const response = await fetch("http://127.0.0.1:8080/aquariums/new/"+userData.userName, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,6 +69,7 @@ const Main = () => {
       });
 
       if (response.ok) {
+        userData.aquariums = [...userData.aquariums, newAquarium];
         navigate("/Main", {});
         
       } else {
