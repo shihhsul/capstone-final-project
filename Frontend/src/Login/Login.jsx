@@ -6,7 +6,7 @@ export const Login = (props) => {
   const [username, setusername] = useState("");
   const [pass, setPass] = useState("");
 
-  const history = useNavigate();
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ export const Login = (props) => {
       });
 
       if (response.ok) {
-      //navigate("/", { state: { message: `Thanks for registering ${username}` } });
+        navigate("/Main", { state: { message: `Thanks for registering ${username}` } });
       } else {
         console.error("Login failed");
       }
