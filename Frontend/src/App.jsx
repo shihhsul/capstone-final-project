@@ -4,6 +4,7 @@ import Layout from './Layout/Layout';
 import Main from './Pages/Main';
 import Test from './Pages/Test';
 import Auth from './Login/Auth'
+import { UserProvider } from './UserContext';
 
 function App() {
   const location = useLocation();
@@ -19,6 +20,7 @@ function App() {
   );
 
   return (
+    <UserProvider>
     <>
       {isLoginPage ? (
         <RoutesWithOptionalLayout />
@@ -28,6 +30,7 @@ function App() {
         </Layout>
       )}
     </>
+    </UserProvider>
   );
 }
 

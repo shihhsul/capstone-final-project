@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../UserContext';
 
 export const Login = (props) => {
   const [username, setusername] = useState("");
   const [pass, setPass] = useState("");
+  const { userData, setUserData } = useContext(UserContext);
 
   const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userData = {
+    const attemptData = {
       id: null,
       userName: username,
       password: pass,
@@ -26,11 +28,15 @@ export const Login = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(attemptData),
       });
 
       if (response.ok) {
+        const userDataFromResponse = await response.json();
+        console.log("UserData from API:", userDataFromResponse);
+        setUserData(userDataFromResponse);
         navigate("/Main", { state: { message: `Thanks for registering ${username}` } });
+        console.log(userData);
       } else {
         console.error("Login failed");
       }
