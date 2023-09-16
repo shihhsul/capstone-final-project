@@ -14,7 +14,7 @@ const UserProvider = ({ children }) => {
       };
 
   const [userData, setUserData] = useState(initialUserData);
-
+  
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
       {children}

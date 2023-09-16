@@ -58,13 +58,14 @@ public class UserController {
         return this.UserServ.getUserById(id);
     }
 
-    @PutMapping("/modify/{id}")
-    public User modifyUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return this.UserServ.updateUser(id, updatedUser);
+    @PutMapping("/modify")
+    public User modifyUser(@RequestBody User updatedUser) {
+        return this.UserServ.updateUser(updatedUser);
     }
 
     @DeleteMapping("/delete/{id}")
     public void removeUser(@PathVariable Long id) {
         this.UserServ.deleteUserById(id);
     }
+
 }
