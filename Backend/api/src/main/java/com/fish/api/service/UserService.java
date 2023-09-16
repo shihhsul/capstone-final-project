@@ -68,4 +68,13 @@ public class UserService {
         }
         return false;
     }
+
+    public boolean doesUsernameExist(String username) {
+        for (User user : UserRepo.findAll()) {
+            if (user.getUserName().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

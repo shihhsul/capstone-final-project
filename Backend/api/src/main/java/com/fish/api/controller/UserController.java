@@ -26,8 +26,12 @@ public class UserController {
 
     @PostMapping("/new")
     public ResponseEntity<String> addUser(@RequestBody User User) {
-        this.UserServ.createUser(User);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (UserServ.doesUsernameExist(User.getUserName())) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            this.UserServ.createUser(User);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 
     @PutMapping("/login")
