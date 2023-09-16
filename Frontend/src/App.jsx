@@ -8,13 +8,13 @@ import Auth from './Login/Auth'
 function App() {
   const location = useLocation();
 
-  const isLoginPage = location.pathname === '/Login';
+  const isLoginPage = location.pathname === '/';
 
   const RoutesWithOptionalLayout = () => (
     <Routes>
-      <Route path='/' element={<Main />} />
+      <Route path='/Main' element={<Main />} />
       <Route path='/Test' element={<Test />} />
-      <Route path='/Login' element={<Auth />} />
+      <Route path='/' element={<Auth />} />
     </Routes>
   );
 

@@ -31,13 +31,13 @@ public class UserController {
     }
 
     @PutMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User User) {
+    public ResponseEntity<User> loginUser(@RequestBody User User) {
         List<User> allUsers = this.UserServ.getAllUsers();
         for (User currentUser : allUsers) {
             if (currentUser.getUserName().equals(User.getUserName())) {
                 if (currentUser.getPassword().equals(User.getPassword())) {
                     System.out.println("Login Succesful");
-                    return new ResponseEntity<>(HttpStatus.OK);
+                    return new ResponseEntity<>(currentUser, HttpStatus.OK);
                 }
             }
         }

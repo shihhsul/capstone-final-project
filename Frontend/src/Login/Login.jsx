@@ -88,11 +88,6 @@ export const Login = (props) => {
           >
             Don't have an account? Register Here!
           </button>
-          <Link to='/'>
-            <button className='text-white underline cursor-pointer'>
-              Return to Main Page
-            </button>
-          </Link>
         </form>
       </div>
     </>
