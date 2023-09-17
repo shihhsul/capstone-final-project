@@ -26,6 +26,9 @@ public class UserController {
 
     @PostMapping("/new")
     public ResponseEntity<String> addUser(@RequestBody User User) {
+        if (User.getUserName() == null || User.getUserName().equals("")) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
         if (UserServ.doesUsernameExist(User.getUserName())) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         } else {
