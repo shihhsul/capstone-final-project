@@ -44,14 +44,15 @@ public class UserService {
      * Updates an existing User, found by a specific id. The "U" (update) in
      * CRUD
      */
-    public User updateUser(Long id, User updateduser) {
-        User existinguser = getUserById(id);
+    public User updateUser(User updateduser) {
+        User existinguser = getUserById(updateduser.getId());
 
         if (existinguser != null) {
             existinguser.setAquariums(updateduser.getAquariums());
             existinguser.setEmail(updateduser.getEmail());
             existinguser.setFullName(updateduser.getFullName());
             existinguser.setPassword(updateduser.getPassword());
+            existinguser.setUserName(updateduser.getUserName());
             UserRepo.save(existinguser);
         }
 
@@ -67,5 +68,23 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public boolean doesUsernameExist(String username) {
+        for (User user : UserRepo.findAll()) {
+            if (user.getUserName().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public User getByUsername(String username) {
+        for (User user : UserRepo.findAll()) {
+            if (user.getUserName().equals(username)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

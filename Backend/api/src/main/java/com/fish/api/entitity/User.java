@@ -34,7 +34,7 @@ public class User {
     private String email;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "aquarium_id", referencedColumnName = "userName")
+    @JoinColumn(name = "user_id")
     private List<Aquarium> aquariums;
 
     public User() {

@@ -14,7 +14,7 @@ const Nav = () => {
           <li className='ml-5'>
             <Link
               className='text-2xl text-white font-bold no-underline hover:opacity-80'
-              to='/'
+              to='/Main'
             >
               Main
             </Link>
@@ -30,7 +30,7 @@ const Nav = () => {
           <li className='ml-5'>
             <Link
               className='text-2xl text-white font-bold no-underline hover:opacity-80'
-              to='/Login'
+              to='/'
             >
               Login
             </Link>

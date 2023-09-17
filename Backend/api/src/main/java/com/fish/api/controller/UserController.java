@@ -26,18 +26,22 @@ public class UserController {
 
     @PostMapping("/new")
     public ResponseEntity<String> addUser(@RequestBody User User) {
-        this.UserServ.createUser(User);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (UserServ.doesUsernameExist(User.getUserName())) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            this.UserServ.createUser(User);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 
     @PutMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User User) {
+    public ResponseEntity<User> loginUser(@RequestBody User User) {
         List<User> allUsers = this.UserServ.getAllUsers();
         for (User currentUser : allUsers) {
             if (currentUser.getUserName().equals(User.getUserName())) {
                 if (currentUser.getPassword().equals(User.getPassword())) {
                     System.out.println("Login Succesful");
-                    return new ResponseEntity<>(HttpStatus.OK);
+                    return new ResponseEntity<>(currentUser, HttpStatus.OK);
                 }
             }
         }
@@ -54,13 +58,14 @@ public class UserController {
         return this.UserServ.getUserById(id);
     }
 
-    @PutMapping("/modify/{id}")
-    public User modifyUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return this.UserServ.updateUser(id, updatedUser);
+    @PutMapping("/modify")
+    public User modifyUser(@RequestBody User updatedUser) {
+        return this.UserServ.updateUser(updatedUser);
     }
 
     @DeleteMapping("/delete/{id}")
     public void removeUser(@PathVariable Long id) {
         this.UserServ.deleteUserById(id);
     }
+
 }

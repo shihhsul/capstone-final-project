@@ -1,65 +1,142 @@
+import React, { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
-import React, { useRef, useEffect } from "react";
-import fishSwimming from "../App Components/fishSwimming.mp4";
-
+import { UserContext } from '../UserContext';
+import { useNavigate } from "react-router-dom";
 const Main = () => {
+  const { userData } = useContext(UserContext);
   const location = useLocation();
-  const message = location.state?.message || "";
+  const message = location.state?.message || '';
+  const [selectedAquarium, setSelectedAquarium] = useState(null);
+  const [newAquariumName, setNewAquariumName] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate(); 
+  
+  const handleAquariumSelect = (aquarium) => {
+    setSelectedAquarium(aquarium);
+  };
 
-  const videoRef = useRef(null);
+  const handleNew = () => {
+    setIsDialogOpen(true);
+  };
 
-  useEffect(() => {
-    // Hide the default MP4 control bar
-    videoRef.current.controls = false;
-  }, []);
+  const handleEdit = () => {
+    // add stuff
+  };
+
+  const handleDelete = async() => {
+    try {
+      const response = await fetch("http://127.0.0.1:8080/aquariums/delete/"+selectedAquarium.name, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const updatedAquariums = userData.aquariums.filter(aquarium => aquarium !== selectedAquarium);
+        userData.aquariums=updatedAquariums;
+        navigate("/Main", {});
+        
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("There was a problem with the login request", error);
+    }
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleDialogSave = async () => {
+    console.log("New aquarium name:", newAquariumName);
+
+    try {
+
+      const newAquarium = {
+        name: newAquariumName,
+        user: null,
+        fishSchools: null,
+      };
+
+      const response = await fetch("http://127.0.0.1:8080/aquariums/new/"+userData.userName, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newAquarium),
+      });
+
+      if (response.ok) {
+        userData.aquariums = [...userData.aquariums, newAquarium];
+        navigate("/Main", {});
+        
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("There was a problem with the login request", error);
+    }
+
+    setIsDialogOpen(false);
+    setNewAquariumName(''); 
+  };
 
   return (
-    <div className=' bg-blue-950 min-h-screen'>
+    <div>
       {message && <h2>{message}</h2>}
-      <div className='relative flex flex-col'>
-        <div className='relative w-full h-0 py-52 overflow-hidden'>
-          <video
-            className='absolute top-0 left-0 w-full h-full object-cover'
-            ref={videoRef}
-            src={fishSwimming}
-            controls
-            autoPlay
-            loop
-            muted
-          >
-            Your browser does not support the video tag.
-          </video>
+
+      {userData && (
+        <div>
+          <h2>User Data</h2>
+          <p>ID: {userData.id}</p>
+          <p>Username: {userData.userName}</p>
+          <p>Password: {userData.password}</p>
+          <p>Username: {userData.fullName}</p>
+          <p>Email: {userData.email}</p>
+
+          <h2>Aquariums</h2>
+          <ul>
+            {userData.aquariums && userData.aquariums.map((aquarium, index) => (
+              <li key={index} onClick={() => handleAquariumSelect(aquarium)}>
+                {aquarium.name}
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className='md:absolute flex flex-col justify-end h-full bg-blue-800'>
-          <div className='container max-w-xl pt-16 pb-24 md:pb-60'>
-            <h1 className='text-center text-2xl md:text-3xl font-black text-white static'>
-              Welcome To Finding Nemo
-            </h1>
-            {/* : Where Every Tank Tells a Tale */}
-            <span className=''> </span>
-            <p className='md:text-2xl text-white text-center'>
-              Discover best practices for taking care of your very own aquatic
-              friends! 
-            </p>
-            {/* //"one stop shop for all your aquarium needs" */}
+      )}
+
+      {selectedAquarium && (
+        <div>
+          <h2>Selected Aquarium</h2>
+          <p>Name: {selectedAquarium.name}</p>
+          {/* add aqua properties */}
+        </div>
+      )}
+
+      <div>
+        <h2>Actions</h2>
+        <button onClick={handleNew}>New</button>
+        <button onClick={handleEdit}>Edit</button>
+        <button onClick={handleDelete}>Delete</button>
+      </div>
+
+      {isDialogOpen && (
+        <div className="dialog">
+          <div className="dialog-content">
+            <h2>Create a New Aquarium</h2>
+            <input
+              type="text"
+              placeholder="Enter aquarium name"
+              value={newAquariumName}
+              onChange={(e) => setNewAquariumName(e.target.value)}
+            />
+            <button onClick={handleDialogSave}>Save</button>
+            <button onClick={handleDialogClose}>Cancel</button>
           </div>
         </div>
-      </div>
-      <h1 className='text-center text-2xl font-bold text-yellow-300 p-8'>
-        App Details
-      </h1>
-      <p className="text-center text-xl font-bold text-white p-5">
-        This App allows users to create virtual aquariums and discover ways to bring your aquatic friends to the real world. Experiment with different tanks, fresh water vs salt water fish, fish combinations, and more to find the best ways to bring an aquatic friend to your home. 
-      </p>
-      <div className='text-center'>
-        <Link
-          to='/Login'
-          className='inline-block w-48 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 mb-2'
-        >
-          Get Started
-        </Link>
-      </div>
+      )}
     </div>
   );
 };

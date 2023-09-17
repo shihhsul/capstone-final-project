@@ -116,11 +116,6 @@ export const Register = (props) => {
           >
             If you already have an account? Log in Here!
           </button>
-          <Link to='/'>
-            <button className='text-white underline cursor-pointer'>
-              Return to Main Page
-            </button>
-          </Link>
         </form>
       </div>
     </>
