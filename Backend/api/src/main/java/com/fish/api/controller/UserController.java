@@ -25,15 +25,15 @@ public class UserController {
     UserService UserServ;
 
     @PostMapping("/new")
-    public ResponseEntity<String> addUser(@RequestBody User User) {
+    public ResponseEntity<User> addUser(@RequestBody User User) {
         if (User.getUserName() == null || User.getUserName().equals("")) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         if (UserServ.doesUsernameExist(User.getUserName())) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } else {
             this.UserServ.createUser(User);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(UserServ.getByUsername(User.getUserName()), HttpStatus.OK);
         }
     }
 

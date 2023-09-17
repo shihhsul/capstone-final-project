@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
+import { UserContext } from '../UserContext';
 
 export const Register = (props) => {
   const navigate = useNavigate(); 
 
+  const { userData, setUserData } = useContext(UserContext);
   const [username, setUserName] = useState("");
   const [pass, setPass] = useState("");
   const [fullname, setFullName] = useState("");
@@ -33,7 +35,10 @@ export const Register = (props) => {
       );
 
       if (response.ok) {
-        navigate("/", { state: { message: `Thanks for registering ${username}` } });
+        const userDataFromResponse = await response.json();
+        console.log("UserData from API:", userDataFromResponse);
+        setUserData(userDataFromResponse);
+        navigate("/Homepage", { state: { message: `Thanks for registering ${username}` } });
       } else {
         console.error("Registration failed");
       }
