@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { UserContext } from '../UserContext';
 import { useNavigate } from "react-router-dom";
 const Main = () => {
+  
   const { userData } = useContext(UserContext);
 
   const location = useLocation();
