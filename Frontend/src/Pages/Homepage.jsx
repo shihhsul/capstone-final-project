@@ -4,8 +4,8 @@ import React, { useRef, useEffect } from "react";
 import fishSwimming from "../App Components/fishSwimming.mp4";
 
 const Homepage = () => {
-  const location = useLocation();
-  const message = location.state?.message || "";
+  // const location = useLocation();
+  // const message = location.state?.message || "";
 
   const videoRef = useRef(null);
 
@@ -16,7 +16,6 @@ const Homepage = () => {
 
   return (
     <div className=' bg-blue-950 min-h-screen'>
-      {message && <h2>{message}</h2>}
       <div className='relative flex flex-col'>
         <div className='relative w-full h-0 py-52 overflow-hidden'>
           <video
@@ -54,7 +53,7 @@ const Homepage = () => {
       </p>
       <div className='text-center'>
         <Link
-          to='/Login'
+          to='/Main'
           className='inline-block w-48 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 mb-2'
         >
           Get Started
