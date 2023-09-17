@@ -51,6 +51,11 @@ public class FishSchoolController {
         }
     }
 
+    @PutMapping("/modify/{id}")
+    public ResponseEntity<FishSchool> modifyFishSchool(@PathVariable int id) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/findall")
     public List<FishSchool> findAllFishSchools() {
         return this.FishSchoolServ.getAllFishSchools();
