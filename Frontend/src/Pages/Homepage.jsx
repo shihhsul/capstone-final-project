@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import React, { useRef, useEffect } from "react";
 import fishSwimming from "../App Components/fishSwimming.mp4";
 
-const Main = () => {
+const Homepage = () => {
   const location = useLocation();
   const message = location.state?.message || "";
 
@@ -64,4 +64,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default Homepage;
