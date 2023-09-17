@@ -10,13 +10,15 @@ const UserProvider = ({ children }) => {
         password: null,
         fullName: null,
         email: null,
-        aquariums: null
+        aquariums: null,
+        selectedAquarium:null
       };
 
   const [userData, setUserData] = useState(initialUserData);
   
+  
   return (
-    <UserContext.Provider value={{ userData, setUserData }}>
+    <UserContext.Provider value={{ userData, setUserData}}>
       {children}
     </UserContext.Provider>
   );

@@ -4,6 +4,7 @@ import { UserContext } from '../UserContext';
 import { useNavigate } from "react-router-dom";
 const Main = () => {
   const { userData } = useContext(UserContext);
+
   const location = useLocation();
   const message = location.state?.message || '';
   const [selectedAquarium, setSelectedAquarium] = useState(null);
@@ -20,7 +21,9 @@ const Main = () => {
   };
 
   const handleEdit = () => {
-    // add stuff
+    userData.selectedAquarium=selectedAquarium.name;
+    console.log(userData);
+    navigate("/Edit", {});
   };
 
   const handleDelete = async() => {
