@@ -64,4 +64,13 @@ public class Aquarium {
         this.fishSchools = fishSchools;
     }
 
+    public boolean hasFishType(String fishType) {
+        for (FishSchool current : this.getFishSchools()) {
+            if (current.getFishType().getCommonName().equals(fishType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
