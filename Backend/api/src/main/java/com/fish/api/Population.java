@@ -55,5 +55,7 @@ public class Population implements CommandLineRunner {
                 // Fish fish5 = new Fish();
                 // fish5.setCommonName("Noah");
                 // fishTypeRepository.save(fish5);
+                // Fish tester=new Fish(common, null, null, 0, 0, null, null, null, null, null,
+                // null, null, 0, false, false, 0, false, null, null, null, 0, 0, 0, 0)
         }
 }
