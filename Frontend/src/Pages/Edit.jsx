@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { UserContext } from '../UserContext';
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,11 @@ const AquariumPage = ({ aquarium }) => {
   const [isFishTypeListVisible, setIsFishTypeListVisible] = useState(false);
 
   const handleFishSchoolSelect = (fishSchool) => {
-    setSelectedFishSchool(fishSchool);
+    if (selectedFishSchool === fishSchool) {
+      setSelectedFishSchool(null);
+    } else {
+      setSelectedFishSchool(fishSchool); 
+    }
   };
 
   const handleDelete = async () => {
@@ -83,18 +87,46 @@ const AquariumPage = ({ aquarium }) => {
         setSelectedFishType(null);
       };
 
+      useEffect(() => {
+        const handleOutsideClick = (event) => {
+          if (
+            selectedFishSchool &&
+            !event.target.closest(".fish-school") &&
+            !event.target.closest(".fish-type-list")
+          ) {
+            setSelectedFishSchool(null);
+          }
+        };
+      
+        window.addEventListener("click", handleOutsideClick);
+      
+        return () => {
+          window.removeEventListener("click", handleOutsideClick);
+        };
+      }, [selectedFishSchool]);
+
+
+
       return (
         <div>
           <h2>Aquarium Name: {aquarium.name}</h2>
           <ul>
-            {aquarium.fishSchools.map((fishSchool, i) => (
-              <li key={i} onClick={() => handleFishSchoolSelect(fishSchool)}>
-                Fish School {i + 1}: {fishSchool.name} <br />
-                Fish Name: {fishSchool.fishType.commonName} <br />
-                Fish Amount: {fishSchool.amountFish}
-              </li>
-            ))}
-          </ul>
+      {aquarium.fishSchools.map((fishSchool, i) => (
+        <li
+          key={i}
+          onClick={() => handleFishSchoolSelect(fishSchool)}
+          className={
+            selectedFishSchool === fishSchool
+              ? "selected fish-school"
+              : "fish-school"
+          }
+        >
+          Fish School {i + 1}: {fishSchool.name} <br />
+          Fish Name: {fishSchool.fishType.commonName} <br />
+          Fish Amount: {fishSchool.amountFish}
+        </li>
+      ))}
+    </ul>
           <h2>Actions</h2>
           <button onClick={handleNew}>New</button>
           <button onClick={() => handleEdit(selectedFishSchool)}>Edit</button>
