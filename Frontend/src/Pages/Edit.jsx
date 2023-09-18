@@ -7,17 +7,16 @@ const AquariumPage = ({ aquarium }) => {
   if (!aquarium) {
     return <p>No selected aquarium.</p>;
   }
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [selectedFishSchool, setSelectedFishSchool] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newFishSchoolAmount, setnewFishSchoolAmount] = useState('');
-  
+
   const handleFishSchoolSelect = (fishSchool) => {
-    console.log(fishSchool);
     setSelectedFishSchool(fishSchool);
   };
 
-  const handleDelete = async() => {
+  const handleDelete = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8080/fishschools/delete/"+selectedFishSchool.id, {
         method: "DELETE",
@@ -27,10 +26,9 @@ const AquariumPage = ({ aquarium }) => {
       });
 
       if (response.ok) {
-        const updatedAquariums =aquarium.fishSchools.filter(fishSchool => fishSchool !== selectedFishSchool);
+        const updatedAquariums = aquarium.fishSchools.filter(fishSchool => fishSchool !== selectedFishSchool);
         aquarium.fishSchools=updatedAquariums;
         navigate("/Edit", {});
-        
       } else {
         console.error("Login failed");
       }
@@ -59,9 +57,8 @@ const AquariumPage = ({ aquarium }) => {
       });
 
       if (response.ok) {
-        selectedFishSchool.amountFish=newFishSchoolAmount;
+        selectedFishSchool.amountFish = newFishSchoolAmount;
         navigate("/Edit", {});
-        
       } else {
         console.error("Login failed");
       }
@@ -70,7 +67,7 @@ const AquariumPage = ({ aquarium }) => {
     }
 
     setIsDialogOpen(false);
-    setnewFishSchoolAmount(''); 
+    setnewFishSchoolAmount('');
   };
 
   return (
@@ -81,13 +78,12 @@ const AquariumPage = ({ aquarium }) => {
           <li key={i} onClick={() => handleFishSchoolSelect(fishSchool)}>
             Fish School {i + 1}: {fishSchool.name} <br />
             Fish Name: {fishSchool.fishType.commonName} <br />
-            Fish Amount:{fishSchool.amountFish}
+            Fish Amount: {fishSchool.amountFish}
           </li>
         ))}
       </ul>
       <h2>Actions</h2>
         <button>New</button>
-        {/* onClick={} */}
         <button onClick={handleEdit}>Edit</button>
         <button onClick={handleDelete}>Delete</button>
 
@@ -107,21 +103,49 @@ const AquariumPage = ({ aquarium }) => {
         </div>
       )}
 
+      {selectedFishSchool && (
+        <div>
+          <h3>Viewing Fish School: {selectedFishSchool.name}</h3>
+          <h3>Species Information:</h3>
+          <p>Fish Name: {selectedFishSchool.fishType.commonName}</p>
+          <p>Scientific Name: {selectedFishSchool.fishType.commonName}</p>
+          <p>Species Group: {selectedFishSchool.fishType.commonName}</p>
+          <p>Lifespan: {selectedFishSchool.fishType.commonName}</p>
+          <p>Average Size: {selectedFishSchool.fishType.commonName}</p>
+
+          <h3>Fish Care Details</h3>
+          <p>Care Level: {selectedFishSchool.fishType.commonName}</p>
+          <p>Food Options: {selectedFishSchool.fishType.commonName}</p>
+          <p>FoodType: {selectedFishSchool.fishType.commonName}</p>
+          <p>Ideal Number: {selectedFishSchool.fishType.commonName}</p>
+          <p>Aggressive to other Species?: {selectedFishSchool.fishType.commonName}</p>
+          <p>Aggressive to same Species?: {selectedFishSchool.fishType.commonName}</p>
+          <p>Swimming Level: {selectedFishSchool.fishType.commonName}</p>
+
+          <h3>Tank Requirements:</h3>
+          <p>Temperature Range: {selectedFishSchool.fishType.commonName}</p>
+          <p>pH Range: {selectedFishSchool.fishType.commonName}</p>
+          <p>Water Hardness: {selectedFishSchool.fishType.commonName}</p>
+          <p>Minimum Tank Size: {selectedFishSchool.fishType.commonName}</p>
+          <p>Substrate: {selectedFishSchool.fishType.commonName}</p>
+          <p>Light Level: {selectedFishSchool.fishType.commonName}</p>
+          <p>Live Plants: {selectedFishSchool.fishType.commonName}</p>
+          <p>Current Level: {selectedFishSchool.fishType.commonName}</p>
+          <p>Decorations Present: {selectedFishSchool.fishType.commonName}</p>
+        </div>
+      )}
     </div>
-    
   );
 };
 
 const Edit = () => {
-const { userData } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
-  // Find the selected aquarium
   const selectedAquarium = userData.aquariums.find(
     (aquarium) => aquarium.name === userData.selectedAquarium
   );
 
   return <AquariumPage aquarium={selectedAquarium} />;
-
 };
 
 export default Edit;
