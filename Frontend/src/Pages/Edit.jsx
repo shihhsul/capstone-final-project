@@ -18,6 +18,7 @@ const AquariumPage = ({ aquarium }) => {
   ]);
   const [selectedFishType, setSelectedFishType] = useState(null);
   const [isFishTypeListVisible, setIsFishTypeListVisible] = useState(false);
+  const [editedFishSchool, setEditedFishSchool] = useState(null);
 
   const handleFishSchoolSelect = (fishSchool) => {
     if (selectedFishSchool === fishSchool) {
@@ -49,6 +50,7 @@ const AquariumPage = ({ aquarium }) => {
     };
 
     const handleEdit = () => {
+      setEditedFishSchool(selectedFishSchool);
       setIsDialogOpen(true);
     };
 
@@ -56,20 +58,43 @@ const AquariumPage = ({ aquarium }) => {
       setIsDialogOpen(false);
     };
 
+    const handleFishTypeSelect = async (fishType) => {
+      setSelectedFishType(fishType)
+      try {
+        console.log(aquarium);
+        const response = await fetch(`http://127.0.0.1:8080/fishschools/new/${aquarium.name}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: "Goldfish"
+        });
+
+        if (response.ok) {
+          navigate("/Edit", {});
+        } else {
+          console.error("Save failed");
+        }
+      } catch (error) {
+          console.error("There was a problem with the save request", error);
+        }
+      
+    };
+
     const handleDialogSave = async () => {
       console.log("New aquarium name:", newFishSchoolAmount);
 
       try {
-        const response = await fetch(`http://127.0.0.1:8080/fishschools/modify/${selectedFishSchool.id}`, {
+        const response = await fetch(`http://127.0.0.1:8080/fishschools/modify/${editedFishSchool.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ amountFish: newFishSchoolAmount })
+          body: newFishSchoolAmount
         });
 
         if (response.ok) {
-          selectedFishSchool.amountFish = newFishSchoolAmount;
+          editedFishSchool.amountFish = newFishSchoolAmount;
           navigate("/Edit", {});
         } else {
           console.error("Save failed");
@@ -89,10 +114,15 @@ const AquariumPage = ({ aquarium }) => {
 
       useEffect(() => {
         const handleOutsideClick = (event) => {
+          const editButton = document.getElementById('editButton');
+          const dialogDiv = document.querySelector('.dialog-content');
+      
           if (
             selectedFishSchool &&
             !event.target.closest(".fish-school") &&
-            !event.target.closest(".fish-type-list")
+            !event.target.closest(".fish-type-list") &&
+            !(editButton && event.target === editButton) &&
+            !(dialogDiv && event.target.closest(".dialog-content"))
           ) {
             setSelectedFishSchool(null);
           }
@@ -129,7 +159,7 @@ const AquariumPage = ({ aquarium }) => {
     </ul>
           <h2>Actions</h2>
           <button onClick={handleNew}>New</button>
-          <button onClick={() => handleEdit(selectedFishSchool)}>Edit</button>
+          <button onClick={(e) => { e.stopPropagation(); handleEdit(selectedFishSchool); }}>Edit</button>
           <button onClick={() => handleDelete(selectedFishSchool)}>Delete</button>
 
           {isFishTypeListVisible && (
@@ -139,7 +169,7 @@ const AquariumPage = ({ aquarium }) => {
                 {fishTypes.map((fishType) => (
                   <li key={fishType.id}>
                     {fishType.name}
-                    <button onClick={() => setSelectedFishType(fishType)}>Select</button>
+                    <button onClick={() => handleFishTypeSelect(fishType)}>Select</button>
                   </li>
                 ))}
               </ul>

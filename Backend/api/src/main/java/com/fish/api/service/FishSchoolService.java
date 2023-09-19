@@ -58,6 +58,17 @@ public class FishSchoolService {
         return null; // Return null if the FishSchool with the given ID is not found
     }
 
+    public FishSchool updateFishSchool(int id, int newAmount) {
+        FishSchool existingFishSchool = getFishSchoolById(id);
+
+        if (existingFishSchool != null) {
+            existingFishSchool.setAmountFish(newAmount);
+            FishSchoolRepo.save(existingFishSchool);
+        }
+
+        return null; // Return null if the FishSchool with the given ID is not found
+    }
+
     /*
      * Delete a FishSchool from the repo. The "D" (delete) in CRUD
      */

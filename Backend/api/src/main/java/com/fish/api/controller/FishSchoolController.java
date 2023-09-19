@@ -52,7 +52,8 @@ public class FishSchoolController {
     }
 
     @PutMapping("/modify/{id}")
-    public ResponseEntity<FishSchool> modifyFishSchool(@PathVariable int id) {
+    public ResponseEntity<FishSchool> modifyFishSchool(@PathVariable int id, @RequestBody int fishAmount) {
+        FishSchoolServ.updateFishSchool(id, fishAmount);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
