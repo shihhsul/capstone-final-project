@@ -61,7 +61,7 @@ const Main = () => {
       const newAquarium = {
         name: newAquariumName,
         user: null,
-        fishSchools: null,
+        fishSchools:[],
       };
 
       const response = await fetch("http://127.0.0.1:8080/aquariums/new/"+userData.userName, {

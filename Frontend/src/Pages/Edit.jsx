@@ -7,13 +7,14 @@ const AquariumPage = ({ aquarium }) => {
   if (!aquarium) {
     return <p>No selected aquarium.</p>;
   }
+
   const { updateAquariumInUserData } = useContext(UserContext);
-  const { userData } = useContext(UserContext);
-  const navigate = useNavigate();
   const [selectedFishSchool, setSelectedFishSchool] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newFishSchoolAmount, setNewFishSchoolAmount] = useState('');
   const [fishTypes, setFishTypes] = useState([]);
+  const [isFishTypeListVisible, setIsFishTypeListVisible] = useState(false);
+  const [editedFishSchool, setEditedFishSchool] = useState(null);
 
   useEffect(() => {
     const fetchFishTypes = async () => {
@@ -21,7 +22,7 @@ const AquariumPage = ({ aquarium }) => {
         const response = await fetch("http://127.0.0.1:8080/fish/findall");
         if (response.ok) {
           const data = await response.json();
-          setFishTypes(data); // Update fishTypes with the fetched data
+          setFishTypes(data); 
         } else {
           console.error("Failed to fetch fishTypes");
         }
@@ -30,12 +31,31 @@ const AquariumPage = ({ aquarium }) => {
       }
     };
 
-    fetchFishTypes(); // Fetch fishTypes when the component mounts
-  }, []); // Empty dependency array to fetch only once when component mounts
+    fetchFishTypes(); 
+  }, []); 
 
-  const [selectedFishType, setSelectedFishType] = useState(null);
-  const [isFishTypeListVisible, setIsFishTypeListVisible] = useState(false);
-  const [editedFishSchool, setEditedFishSchool] = useState(null);
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      const editButton = document.getElementById('editButton');
+      const dialogDiv = document.querySelector('.dialog-content');
+  
+      if (
+        selectedFishSchool &&
+        !event.target.closest(".fish-school") &&
+        !event.target.closest(".fish-type-list") &&
+        !(editButton && event.target === editButton) &&
+        !(dialogDiv && event.target.closest(".dialog-content"))
+      ) {
+        setSelectedFishSchool(null);
+      }
+    };
+  
+    window.addEventListener("click", handleOutsideClick);
+  
+    return () => {
+      window.removeEventListener("click", handleOutsideClick);
+    };
+  }, [selectedFishSchool]);
 
   const handleFishSchoolSelect = (fishSchool) => {
     if (selectedFishSchool === fishSchool) {
@@ -44,28 +64,6 @@ const AquariumPage = ({ aquarium }) => {
       setSelectedFishSchool(fishSchool); 
     }
   };
-
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8080/fishschools/delete/${selectedFishSchool.id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const updatedAquariums = aquarium.fishSchools.filter(fishSchool => fishSchool !== selectedFishSchool);
-        aquarium.fishSchools = updatedAquariums;
-        updateAquariumInUserData(aquarium);
-      } else {
-        console.error("Delete failed");
-      }
-    } catch (error) {
-        console.error("There was a problem with the delete request", error);
-      }
-    };
-
     const handleEdit = () => {
       setEditedFishSchool(selectedFishSchool);
       setIsDialogOpen(true);
@@ -75,29 +73,27 @@ const AquariumPage = ({ aquarium }) => {
       setIsDialogOpen(false);
     };
 
+    const handleNew = () => {
+      setIsFishTypeListVisible(true);
+    };
+
     const handleFishTypeSelect = async (fishType) => {
-      setSelectedFishType(fishType)
       try {
-        console.log(aquarium);
         const response = await fetch(`http://127.0.0.1:8080/fishschools/new/${aquarium.name}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: "Silverfish"
+          body: fishType
         });
-
         if (response.ok) {
           const responseData = await response.json();
-          console.log(responseData);
-          // Update the aquarium and userData.aquariums
           const updatedAquarium = {
             ...aquarium,
             fishSchools: (aquarium.fishSchools || []).concat(responseData),
           };
           updateAquariumInUserData(updatedAquarium);
   
-          console.log(userData);
         } else {
           console.error("Save failed");
         }
@@ -108,8 +104,6 @@ const AquariumPage = ({ aquarium }) => {
     };
 
     const handleDialogSave = async () => {
-      console.log("New aquarium name:", newFishSchoolAmount);
-
       try {
         const response = await fetch(`http://127.0.0.1:8080/fishschools/modify/${editedFishSchool.id}`, {
           method: "PUT",
@@ -118,7 +112,6 @@ const AquariumPage = ({ aquarium }) => {
           },
           body: newFishSchoolAmount
         });
-
         if (response.ok) {
           editedFishSchool.amountFish = newFishSchoolAmount;
         } else {
@@ -127,40 +120,30 @@ const AquariumPage = ({ aquarium }) => {
       } catch (error) {
           console.error("There was a problem with the save request", error);
         }
-
         setIsDialogOpen(false);
         setNewFishSchoolAmount('');
       };
 
-      const handleNew = () => {
-        setIsFishTypeListVisible(true);
-        setSelectedFishType(null);
-      };
-
-      useEffect(() => {
-        const handleOutsideClick = (event) => {
-          const editButton = document.getElementById('editButton');
-          const dialogDiv = document.querySelector('.dialog-content');
-      
-          if (
-            selectedFishSchool &&
-            !event.target.closest(".fish-school") &&
-            !event.target.closest(".fish-type-list") &&
-            !(editButton && event.target === editButton) &&
-            !(dialogDiv && event.target.closest(".dialog-content"))
-          ) {
-            setSelectedFishSchool(null);
+      const handleDelete = async () => {
+        try {
+          const response = await fetch(`http://127.0.0.1:8080/fishschools/delete/${selectedFishSchool.id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+    
+          if (response.ok) {
+            const updatedAquariums = aquarium.fishSchools.filter(fishSchool => fishSchool !== selectedFishSchool);
+            aquarium.fishSchools = updatedAquariums;
+            updateAquariumInUserData(aquarium);
+          } else {
+            console.error("Delete failed");
+          }
+        } catch (error) {
+            console.error("There was a problem with the delete request", error);
           }
         };
-      
-        window.addEventListener("click", handleOutsideClick);
-      
-        return () => {
-          window.removeEventListener("click", handleOutsideClick);
-        };
-      }, [selectedFishSchool]);
-
-
 
       return (
         <div>
@@ -192,9 +175,8 @@ const AquariumPage = ({ aquarium }) => {
               <h3>Fish Types</h3>
               <ul>
               {fishTypes.map((fishType) => (
-              <li key={fishType.id}>
-                {fishType.commonName}
-                <button onClick={() => handleFishTypeSelect(fishType)}>Select</button>
+              <li key={fishType.commonName}>
+                <button onClick={() => handleFishTypeSelect(fishType.commonName)}>{fishType.commonName}</button>
               </li>
 ))}
 
@@ -255,7 +237,6 @@ const AquariumPage = ({ aquarium }) => {
 
 const Edit = () => {
   const { userData } = useContext(UserContext);
-
   const selectedAquarium = userData.aquariums.find(
     (aquarium) => aquarium.name === userData.selectedAquarium
   );
