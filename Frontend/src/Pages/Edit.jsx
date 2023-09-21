@@ -7,15 +7,32 @@ const AquariumPage = ({ aquarium }) => {
   if (!aquarium) {
     return <p>No selected aquarium.</p>;
   }
+  const { updateAquariumInUserData } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const navigate = useNavigate();
   const [selectedFishSchool, setSelectedFishSchool] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newFishSchoolAmount, setNewFishSchoolAmount] = useState('');
-  const [fishTypes] = useState([
-    { id: 1, name: 'Fish Type 1', scientificName: 'Scientific Name 1', speciesGroup: 'Species Group 1', lifespan: 'Lifespan 1', averageSize: 'Average Size 1', careLevel: 'Care Level 1', foodOptions: 'Food Options 1', foodType: 'Food Type 1', idealNumber: 'Ideal Number 1', isAggressiveToOtherSpecies: 'Yes', isAggressiveToSameSpecies: 'No', swimmingLevel: 'Swimming Level 1', temperatureRange: 'Temperature Range 1', phRange: 'pH Range 1', waterHardness: 'Water Hardness 1', minTankSize: 'Minimum Tank Size 1', substrate: 'Substrate 1', lightLevel: 'Light Level 1', livePlants: 'Yes', currentLevel: 'Current Level 1', decorationsPresent: 'Yes' },
-    { id: 2, name: 'Fish Type 2', scientificName: 'Scientific Name 2', speciesGroup: 'Species Group 2', lifespan: 'Lifespan 2', averageSize: 'Average Size 2', careLevel: 'Care Level 2', foodOptions: 'Food Options 2', foodType: 'Food Type 2', idealNumber: 'Ideal Number 2', isAggressiveToOtherSpecies: 'No', isAggressiveToSameSpecies: 'Yes', swimmingLevel: 'Swimming Level 2', temperatureRange: 'Temperature Range 2', phRange: 'pH Range 2', waterHardness: 'Water Hardness 2', minTankSize: 'Minimum Tank Size 2', substrate: 'Substrate 2', lightLevel: 'Light Level 2', livePlants: 'No', currentLevel: 'Current Level 2', decorationsPresent: 'No' },
-    { id: 3, name: 'Fish Type 3', scientificName: 'Scientific Name 3', speciesGroup: 'Species Group 3', lifespan: 'Lifespan 3', averageSize: 'Average Size 3', careLevel: 'Care Level 3', foodOptions: 'Food Options 3', foodType: 'Food Type 3', idealNumber: 'Ideal Number 3', isAggressiveToOtherSpecies: 'No', isAggressiveToSameSpecies: 'No', swimmingLevel: 'Swimming Level 3', temperatureRange: 'Temperature Range 3', phRange: 'pH Range 3', waterHardness: 'Water Hardness 3', minTankSize: 'Minimum Tank Size 3', substrate: 'Substrate 3', lightLevel: 'Light Level 3', livePlants: 'Yes', currentLevel: 'Current Level 3', decorationsPresent: 'Yes' }
-  ]);
+  const [fishTypes, setFishTypes] = useState([]);
+
+  useEffect(() => {
+    const fetchFishTypes = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8080/fish/findall");
+        if (response.ok) {
+          const data = await response.json();
+          setFishTypes(data); // Update fishTypes with the fetched data
+        } else {
+          console.error("Failed to fetch fishTypes");
+        }
+      } catch (error) {
+        console.error("Error fetching fishTypes:", error);
+      }
+    };
+
+    fetchFishTypes(); // Fetch fishTypes when the component mounts
+  }, []); // Empty dependency array to fetch only once when component mounts
+
   const [selectedFishType, setSelectedFishType] = useState(null);
   const [isFishTypeListVisible, setIsFishTypeListVisible] = useState(false);
   const [editedFishSchool, setEditedFishSchool] = useState(null);
@@ -40,7 +57,7 @@ const AquariumPage = ({ aquarium }) => {
       if (response.ok) {
         const updatedAquariums = aquarium.fishSchools.filter(fishSchool => fishSchool !== selectedFishSchool);
         aquarium.fishSchools = updatedAquariums;
-        navigate("/Edit", {});
+        updateAquariumInUserData(aquarium);
       } else {
         console.error("Delete failed");
       }
@@ -67,11 +84,20 @@ const AquariumPage = ({ aquarium }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: "Goldfish"
+          body: "Silverfish"
         });
 
         if (response.ok) {
-          navigate("/Edit", {});
+          const responseData = await response.json();
+          console.log(responseData);
+          // Update the aquarium and userData.aquariums
+          const updatedAquarium = {
+            ...aquarium,
+            fishSchools: (aquarium.fishSchools || []).concat(responseData),
+          };
+          updateAquariumInUserData(updatedAquarium);
+  
+          console.log(userData);
         } else {
           console.error("Save failed");
         }
@@ -95,7 +121,6 @@ const AquariumPage = ({ aquarium }) => {
 
         if (response.ok) {
           editedFishSchool.amountFish = newFishSchoolAmount;
-          navigate("/Edit", {});
         } else {
           console.error("Save failed");
         }
@@ -143,7 +168,7 @@ const AquariumPage = ({ aquarium }) => {
           <ul>
       {aquarium.fishSchools.map((fishSchool, i) => (
         <li
-          key={i}
+          key={fishSchool.name}
           onClick={() => handleFishSchoolSelect(fishSchool)}
           className={
             selectedFishSchool === fishSchool
@@ -166,12 +191,13 @@ const AquariumPage = ({ aquarium }) => {
             <div>
               <h3>Fish Types</h3>
               <ul>
-                {fishTypes.map((fishType) => (
-                  <li key={fishType.id}>
-                    {fishType.name}
-                    <button onClick={() => handleFishTypeSelect(fishType)}>Select</button>
-                  </li>
-                ))}
+              {fishTypes.map((fishType) => (
+              <li key={fishType.id}>
+                {fishType.commonName}
+                <button onClick={() => handleFishTypeSelect(fishType)}>Select</button>
+              </li>
+))}
+
               </ul>
             </div>
           )}
