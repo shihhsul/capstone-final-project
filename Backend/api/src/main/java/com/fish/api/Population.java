@@ -21,19 +21,6 @@ import com.fish.api.entitity.User;
 
 @Component
 public class Population implements CommandLineRunner {
-        private static class FishFileHandler {
-                private static final String FILE_PATH = "Backend/api/src/main/java/com/fish/api/fish_data.txt";
-
-                public static void saveFishToFile(Fish fish) {
-                        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-                                writer.write(fish.toString());
-                                writer.newLine();
-                        } catch (IOException e) {
-                                e.printStackTrace();
-                        }
-                }
-        }
-
         @Autowired
         private UserRepository userRepository;
         @Autowired
@@ -45,98 +32,7 @@ public class Population implements CommandLineRunner {
 
         @Override
         public void run(String... args) throws Exception {
-                Scanner scanner = new Scanner(System.in);
-                String exit = "";
-
-                System.out.println("Enter exit");
-                exit = scanner.nextLine();
-
-                while (!exit.equals("exit")) {
-                        Fish fish = new Fish();
-
-                        System.out.print("Enter common name: ");
-                        fish.setCommonName(scanner.nextLine());
-
-                        System.out.print("Enter scientific name: ");
-                        fish.setScientificName(scanner.nextLine());
-
-                        System.out.print("Enter species group: ");
-                        fish.setSpeciesGroup(scanner.nextLine());
-
-                        System.out.print("Enter care level: ");
-                        fish.setCareLevel(scanner.nextLine());
-
-                        System.out.print("Enter average size: ");
-                        fish.setAverageSize(scanner.nextLine());
-
-                        System.out.print("Enter lifespan: ");
-                        fish.setLifespan(scanner.nextLine());
-
-                        System.out.print("Enter phLow: ");
-                        fish.setPhLow(scanner.nextLine());
-
-                        System.out.print("Enter phHigh: ");
-                        fish.setPhHigh(scanner.nextLine());
-
-                        System.out.print("Enter tempLow: ");
-                        fish.setTempLow(scanner.nextLine());
-
-                        System.out.print("Enter tempHigh: ");
-                        fish.setTempHigh(scanner.nextLine());
-
-                        System.out.print("Enter hardLow: ");
-                        fish.setHardLow(scanner.nextLine());
-
-                        System.out.print("Enter hardHigh: ");
-                        fish.setHardHigh(scanner.nextLine());
-
-                        System.out.print("Enter swimming level: ");
-                        fish.setSwimmingLevel(scanner.nextLine());
-
-                        System.out.print("Is the fish aggressive towards itself? (true/false): ");
-                        fish.setIsAggressiveSelf(scanner.nextLine());
-
-                        System.out.print("Is the fish aggressive towards others? (true/false): ");
-                        fish.setIsAggressiveOther(scanner.nextLine());
-
-                        System.out.print("Enter ideal number: ");
-                        fish.setIdealNumber(scanner.nextLine());
-
-                        System.out.print("Does the fish like live plants? (true/false): ");
-                        fish.setLivePlants(scanner.nextLine());
-
-                        System.out.print("Enter food type: ");
-                        fish.setFoodType(scanner.nextLine());
-
-                        System.out.print("Enter food options: ");
-                        fish.setFoodOptions(scanner.nextLine());
-
-                        System.out.print("Enter substrate: ");
-                        fish.setSubstrate(scanner.nextLine());
-
-                        System.out.print("Enter light: ");
-                        fish.setLight(scanner.nextLine());
-
-                        System.out.print("Enter current: ");
-                        fish.setCurrent(scanner.nextLine());
-
-                        System.out.print("Enter decorations: ");
-                        fish.setDecorations(scanner.nextLine());
-
-                        System.out.print("Enter minimum tank size: ");
-                        fish.setMinimumTankSize(scanner.nextLine());
-
-                        System.out.print("Enter picture URL: ");
-                        fish.setPicUrl(scanner.nextLine());
-
-                        FishFileHandler.saveFishToFile(fish);
-
-                        System.out.print("Enter exit");
-                        exit = scanner.nextLine();
-                }
-
                 List<Fish> fishList = new ArrayList<>();
-
                 try (BufferedReader reader = new BufferedReader(
                                 new FileReader("Backend/api/src/main/java/com/fish/api/fish_data.txt"))) {
                         String line;

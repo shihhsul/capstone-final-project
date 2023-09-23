@@ -1,1 +1,12 @@
 Zebra Tilapia,Tilapi buttikoferi,African Cichlids,Moderate,12,10,6.5,7.5,72,77,4,15,Mid,Peaceful,Aggressive,Any,No,Omnivore,Pellets/Live/Frozen,Any,Moderate,Moderate,Low,75,AfricanCichlids1
+Yellow Lab,Labidochromis caeruleus,African Cichlids,Easy,4,10,7.7,8.6,75,82,10,25,Bottom,Semi Aggressive,Semi Aggressive,1,Yes,Omnivore,Pellets/Algae/Veggies/Live/Frozen,Sand,Moderate,Moderate,Moderate,29,AfricanCichlids2
+Tropheus Moorii,Tropheus moorii,African Cichlids,Moderate,5.8,7,8,9.5,73,81,8,25,Mid,Aggressive,Aggressive,12,Yes,Omnivore,Flakes/Pellets/Veggies,Sand,Moderate,Moderate,Moderate,29,AfricanCichlids4
+Auratus Cichlid,Melanochromis auratus,African Cichlids,Moderate,4.4,5,7.6,8.8,73,82,10,25,Mid,Aggressive,Aggressive,1,Yes,Omnivore,Flakes/Pellets/Veggies,Any,Moderate,Moderate,Moderate,55,AfricanCichlids5
+White-Spotted Cichlid,Tropheus duboisi,African Cichlids,Moderate,4.8,7,8,9.5,73,81,8,25,Mid,Aggressive,Aggressive,12,Yes,Omnivore,Flakes/Pellets/Veggies,Sand,Moderate,Moderate,Moderate,29,AfricanCichlids3
+Polar Blue Parrot,Polar Blue Parrot,American Cichlids,Easy,3,10,6.5,8,72,80,2,25,Mid,Semi Aggressive,Semi Aggressive,Any,Yes,Omnivore,Flakes/Pellets/Live/Frozen,Any,Moderate,Moderate,Moderate,29,AmericanCichlids1
+Yellow Dwarf Cichlid,Apistogramma borellii,American Cichlids,Moderate,3,3,5,7,72,84,0,12,Bottom,Peaceful,Peaceful,Any,Yes,Carnivore,Live/Frozen,Any,Low,Low,High,10,AmericanCichlids2
+Wolf Cichlid,Parachromis dovii,American Cichlids,Moderate,28,30,6,8,75,82,5,20,Mid,Semi Aggressive,Semi Aggressive,1,Yes,Carnivore,Pellets/Live/Frozen,Sand,Moderate,Moderate,Moderate,125,AmericanCichlids3
+Texas Cichlid,Herichthys cyanoguttatus,American Cichlids,Difficult,12,15,6.5,8.0,68,75,5,15,Mid,Aggressive,Aggressive,1,Yes,Omnivore,Flakes/Pellets/Live/Frozen,Any,Moderate,Moderate,Any,75,AmericanCichlids4
+Threadfin Acara,Acarichthys heckelii,American Cichlids,Moderate,8,7,6.0,8.0,75,86,4,12,Mid,Peaceful,Semi Aggressive,Any,No,Omnivore,Flakes/Pellets/Live/Frozen/Veggies,Sand,Moderate,Moderate,Moderate,55,AmericanCichlids5
+Angelfish,Pterophyllumscalare,Angelfish,Easy,6,8,6,7.4,76,86,0,15,Mid,Semi Aggressive,Semi Aggressive,Any,Yes,Omnivore,Flakes/Pellets/Live/Frozen,Any,Moderate,Low,Moderate,29,Angelfish1
+Altum Angelfish,Pterophyllum altum,Angelfish,Difficult,7,15,4.8,6.2,82,90,0,5,Mid,Semi Aggressive,Semi Aggressive,Any,Yes,Omnivore,Flakes/Pellets/Live/Frozen,Any,Low,Low,Moderate,40,Angelfish2
