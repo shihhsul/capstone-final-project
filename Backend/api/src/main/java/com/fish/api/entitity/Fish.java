@@ -19,7 +19,7 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Fish {
 
-    // a char type means it can be low mid or high, 'l','m','h' respectively
+    // a String type means it can be low mid or high, 'l','m','h' respectively
     @Id
     @Column(name = "commonName")
     private String commonName;
@@ -28,7 +28,7 @@ public class Fish {
     @Column(name = "speciesGroup")
     private String speciesGroup = "";
     @Column(name = "careLevel")
-    private char careLevel = 'n';
+    private String careLevel = "";
     @Column(name = "averageSize")
     private int averageSize;
     @Column(name = "lifespan")
@@ -50,7 +50,7 @@ public class Fish {
     private Double hardHigh;
 
     @Column(name = "swimmingLevel")
-    private char swimmingLevel;
+    private String swimmingLevel;
     @Column(name = "ownAggressiveness")
     private boolean isAggressiveSelf = false;
     @Column(name = "otherAggressiveness")
@@ -66,22 +66,24 @@ public class Fish {
     @Column(name = "substrate")
     private String substrate = "";
     @Column(name = "light")
-    private char light = 'n';
+    private String light = "";
     @Column(name = "current")
-    private char current = 'n';
+    private String current = "";
     @Column(name = "decorations")
-    private char decorations = 'n';
+    private String decorations = "";
     @Column(name = "tankSize")
     private int minimumTankSize;
+    @Column(name = "picUrl")
+    private String picUrl;
 
     public Fish() {
     }
 
-    public Fish(String commonName, String scientificName, String speciesGroup, char careLevel, int averageSize,
+    public Fish(String commonName, String scientificName, String speciesGroup, String careLevel, int averageSize,
             Double lifespan, Double phLow, Double phHigh, Double tempLow, Double tempHigh, Double hardLow,
-            Double hardHigh, char swimmingLevel, boolean isAggressiveSelf, boolean isAggressiveOther, int idealNumber,
-            boolean livePlants, String foodType, String foodOptions, String substrate, char light, char current,
-            char decorations, int minimumTankSize) {
+            Double hardHigh, String swimmingLevel, boolean isAggressiveSelf, boolean isAggressiveOther, int idealNumber,
+            boolean livePlants, String foodType, String foodOptions, String substrate, String light, String current,
+            String decorations, int minimumTankSize, String picUrl) {
         this.commonName = commonName;
         this.scientificName = scientificName;
         this.speciesGroup = speciesGroup;
@@ -106,6 +108,7 @@ public class Fish {
         this.current = current;
         this.decorations = decorations;
         this.minimumTankSize = minimumTankSize;
+        this.picUrl = picUrl;
     }
 
     public String getCommonName() {
@@ -132,11 +135,11 @@ public class Fish {
         this.speciesGroup = speciesGroup;
     }
 
-    public char getCareLevel() {
+    public String getCareLevel() {
         return this.careLevel;
     }
 
-    public void setCareLevel(char careLevel) {
+    public void setCareLevel(String careLevel) {
         this.careLevel = careLevel;
     }
 
@@ -204,11 +207,11 @@ public class Fish {
         this.hardHigh = hardHigh;
     }
 
-    public char getSwimmingLevel() {
+    public String getSwimmingLevel() {
         return this.swimmingLevel;
     }
 
-    public void setSwimmingLevel(char swimmingLevel) {
+    public void setSwimmingLevel(String swimmingLevel) {
         this.swimmingLevel = swimmingLevel;
     }
 
@@ -280,27 +283,27 @@ public class Fish {
         this.substrate = substrate;
     }
 
-    public char getLight() {
+    public String getLight() {
         return this.light;
     }
 
-    public void setLight(char light) {
+    public void setLight(String light) {
         this.light = light;
     }
 
-    public char getCurrent() {
+    public String getCurrent() {
         return this.current;
     }
 
-    public void setCurrent(char current) {
+    public void setCurrent(String current) {
         this.current = current;
     }
 
-    public char getDecorations() {
+    public String getDecorations() {
         return this.decorations;
     }
 
-    public void setDecorations(char decorations) {
+    public void setDecorations(String decorations) {
         this.decorations = decorations;
     }
 
@@ -310,6 +313,14 @@ public class Fish {
 
     public void setMinimumTankSize(int minimumTankSize) {
         this.minimumTankSize = minimumTankSize;
+    }
+
+    public String getPicUrl() {
+        return this.picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
 }

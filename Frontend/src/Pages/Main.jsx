@@ -21,11 +21,17 @@ const Main = () => {
     setIsDialogOpen(true);
   };
 
+  const handleView = () => {
+    userData.selectedAquarium=selectedAquarium.name;
+    navigate("/View", {});
+  };
+
   const handleEdit = () => {
     userData.selectedAquarium=selectedAquarium.name;
     console.log(userData);
     navigate("/Edit", {});
   };
+
 
   const handleDelete = async() => {
     try {
@@ -124,6 +130,7 @@ const Main = () => {
         <button className="bg-blue-500 text-white p-2 rounded mr-2 hover:bg-blue-600" onClick={handleNew}>New</button>
         <button className="bg-yellow-500 text-white p-2 rounded mr-2 hover:bg-yellow-600" onClick={handleEdit}>Edit</button>
         <button className="bg-red-500 text-white p-2 rounded hover:bg-red-600" onClick={handleDelete}>Delete</button>
+        <button className="bg-green-500 text-white p-2 rounded hover:bg-green-600" onClick={handleView}>View</button>
       </div>
   
       {isDialogOpen && (

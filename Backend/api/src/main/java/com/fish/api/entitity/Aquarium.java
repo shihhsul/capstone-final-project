@@ -73,4 +73,12 @@ public class Aquarium {
         return false;
     }
 
+    public String[] aquariumCompatibility() {
+        String[] output = new String[0];
+        for (FishSchool fishSchool : this.fishSchools) {
+
+        }
+        return output;
+    }
+
 }

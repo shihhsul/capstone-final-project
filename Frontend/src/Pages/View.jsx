@@ -2,7 +2,7 @@ import React, { useContext, useState,useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { UserContext } from '../UserContext';
 import { useNavigate } from "react-router-dom";
-import fish from '../FishImages/download.jpg'
+
 const AquariumPage = ({ aquarium }) => {
   if (!aquarium) {
     return <p>No selected aquarium.</p>;
@@ -161,8 +161,6 @@ const AquariumPage = ({ aquarium }) => {
                 : "fish-school bg-gray-200 p-2 rounded mt-2 cursor-pointer"
             }
           >
-            <img src={fish} alt={`${"error"} image`} className="w-10 h-10 rounded-full mr-2" /> 
-            Fish School {i + 1}: {fishSchool.name} <br />
             Fish Name: {fishSchool.fishType.commonName} <br />
             Fish Amount: {fishSchool.amountFish}
           </li>
@@ -176,28 +174,20 @@ const AquariumPage = ({ aquarium }) => {
     </div>
 
     {isFishTypeListVisible && (
-  <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
-    <h3 className="text-lg font-semibold mb-4">Fish Types</h3>
-    <ul>
-      {fishTypes.map((fishType) => (
-        <li key={fishType.commonName} className="mb-2">
-          <div className="flex items-center">
-          <img src={fish} alt={`${fishType.commonName} image`} className="w-10 h-10 rounded-full mr-2" /> 
-            {/* <img src={fishType.pictureUrl} alt={`${fishType.commonName} image`} className="w-10 h-10 rounded-full mr-2" /> */}
-            <button className="text-blue-600 hover:underline" onClick={() => handleFishTypeSelect(fishType.commonName)}>
-              {fishType.commonName}
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
-
+      <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
+        <h3 className="text-lg font-semibold mb-4">Fish Types</h3>
+        <ul>
+          {fishTypes.map((fishType) => (
+            <li key={fishType.commonName} className="mb-2">
+              <button className="text-blue-600 hover:underline" onClick={() => handleFishTypeSelect(fishType.commonName)}>{fishType.commonName}</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
           {selectedFishSchool && (
             <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
               <h3>Viewing Fish School: {selectedFishSchool.name}</h3>
-              <img src={fish} alt={`${"error"} image`} className="w-10 h-10 rounded-full mr-2" /> 
               <h3>Species Information:</h3>
               <p>Fish Name: {selectedFishSchool.fishType.commonName}</p>
               <p>Scientific Name: {selectedFishSchool.fishType.scientificName}</p>
