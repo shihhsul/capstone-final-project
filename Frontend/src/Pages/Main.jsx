@@ -88,61 +88,63 @@ const Main = () => {
   };
 
   return (
-    <div>
-      {message && <h2>{message}</h2>}
-
+    <div className="bg-gradient-to-b from-light-blue-300 to-deep-blue-900 min-h-screen p-8">
+      {message && <h2 className="text-2xl font-bold mb-4">{message}</h2>}
+  
       {userData && (
-        <div>
-          <h2>User Data</h2>
-          <p>ID: {userData.id}</p>
-          <p>Username: {userData.userName}</p>
-          <p>Password: {userData.password}</p>
-          <p>Username: {userData.fullName}</p>
-          <p>Email: {userData.email}</p>
-
-          <h2>Aquariums</h2>
+        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h2 className="text-xl font-semibold mb-4">User Data</h2>
+          <p className="mb-2"><span className="font-medium">ID:</span> {userData.id}</p>
+          <p className="mb-2"><span className="font-medium">Username:</span> {userData.userName}</p>
+          <p className="mb-2"><span className="font-medium">Password:</span> {userData.password}</p>
+          <p className="mb-2"><span className="font-medium">Full Name:</span> {userData.fullName}</p>
+          <p className="mb-4"><span className="font-medium">Email:</span> {userData.email}</p>
+  
+          <h2 className="text-xl font-semibold mb-4">Aquariums</h2>
           <ul>
             {userData.aquariums && userData.aquariums.map((aquarium, index) => (
-              <li key={index} onClick={() => handleAquariumSelect(aquarium)}>
+              <li key={index} className="cursor-pointer hover:bg-gray-200 p-2 rounded" onClick={() => handleAquariumSelect(aquarium)}>
                 {aquarium.name}
               </li>
             ))}
           </ul>
         </div>
       )}
-
+  
       {selectedAquarium && (
-        <div>
-          <h2>Selected Aquarium</h2>
-          <p>Name: {selectedAquarium.name}</p>
+        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h2 className="text-xl font-semibold mb-4">Selected Aquarium</h2>
+          <p className="mb-2"><span className="font-medium">Name:</span> {selectedAquarium.name}</p>
           {/* add aqua properties */}
         </div>
       )}
-
-      <div>
-        <h2>Actions</h2>
-        <button onClick={handleNew}>New</button>
-        <button onClick={handleEdit}>Edit</button>
-        <button onClick={handleDelete}>Delete</button>
+  
+      <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl transform transition-transform duration-300 hover:scale-105">
+        <h2 className="text-xl font-semibold mb-4">Actions</h2>
+        <button className="bg-blue-500 text-white p-2 rounded mr-2 hover:bg-blue-600" onClick={handleNew}>New</button>
+        <button className="bg-yellow-500 text-white p-2 rounded mr-2 hover:bg-yellow-600" onClick={handleEdit}>Edit</button>
+        <button className="bg-red-500 text-white p-2 rounded hover:bg-red-600" onClick={handleDelete}>Delete</button>
       </div>
-
+  
       {isDialogOpen && (
-        <div className="dialog">
-          <div className="dialog-content">
-            <h2>Create a New Aquarium</h2>
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="dialog-content bg-white p-8 rounded-lg shadow-xl w-1/3">
+            <h2 className="text-xl font-semibold mb-4">Create a New Aquarium</h2>
             <input
               type="text"
               placeholder="Enter aquarium name"
               value={newAquariumName}
               onChange={(e) => setNewAquariumName(e.target.value)}
+              className="border p-2 w-full rounded mb-4"
             />
-            <button onClick={handleDialogSave}>Save</button>
-            <button onClick={handleDialogClose}>Cancel</button>
+            <button className="bg-green-500 text-white p-2 rounded mr-2 hover:bg-green-600" onClick={handleDialogSave}>Save</button>
+            <button className="bg-gray-500 text-white p-2 rounded hover:bg-gray-600" onClick={handleDialogClose}>Cancel</button>
           </div>
         </div>
       )}
     </div>
   );
+  
 };
 
 export default Main;

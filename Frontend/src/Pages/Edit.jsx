@@ -146,46 +146,48 @@ const AquariumPage = ({ aquarium }) => {
         };
 
       return (
-        <div>
-          <h2>Aquarium Name: {aquarium.name}</h2>
-          <ul>
-      {aquarium.fishSchools.map((fishSchool, i) => (
-        <li
-          key={fishSchool.name}
-          onClick={() => handleFishSchoolSelect(fishSchool)}
-          className={
-            selectedFishSchool === fishSchool
-              ? "selected fish-school"
-              : "fish-school"
-          }
-        >
-          Fish School {i + 1}: {fishSchool.name} <br />
-          Fish Name: {fishSchool.fishType.commonName} <br />
-          Fish Amount: {fishSchool.amountFish}
-        </li>
-      ))}
-    </ul>
-          <h2>Actions</h2>
-          <button onClick={handleNew}>New</button>
-          <button onClick={(e) => { e.stopPropagation(); handleEdit(selectedFishSchool); }}>Edit</button>
-          <button onClick={() => handleDelete(selectedFishSchool)}>Delete</button>
+<div className="bg-gradient-to-b from-light-blue-300 to-deep-blue-900 min-h-screen p-8">
+    
+    <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
+      <h2 className="text-xl font-semibold mb-4">Aquarium Name: {aquarium.name}</h2>
+      <ul className="mb-8">
+        {aquarium.fishSchools.map((fishSchool, i) => (
+          <li
+            key={fishSchool.name}
+            onClick={() => handleFishSchoolSelect(fishSchool)}
+            className={
+              selectedFishSchool === fishSchool
+                ? "selected fish-school bg-blue-200 p-2 rounded mt-2 cursor-pointer"
+                : "fish-school bg-gray-200 p-2 rounded mt-2 cursor-pointer"
+            }
+          >
+            Fish School {i + 1}: {fishSchool.name} <br />
+            Fish Name: {fishSchool.fishType.commonName} <br />
+            Fish Amount: {fishSchool.amountFish}
+          </li>
+        ))}
+      </ul>
 
-          {isFishTypeListVisible && (
-            <div>
-              <h3>Fish Types</h3>
-              <ul>
-              {fishTypes.map((fishType) => (
-              <li key={fishType.commonName}>
-                <button onClick={() => handleFishTypeSelect(fishType.commonName)}>{fishType.commonName}</button>
-              </li>
-))}
+      <h2 className="text-xl font-semibold mb-4">Actions</h2>
+      <button className="bg-blue-500 text-white p-2 rounded mr-2 hover:bg-blue-600" onClick={handleNew}>New</button>
+      <button className="bg-yellow-500 text-white p-2 rounded mr-2 hover:bg-yellow-600" onClick={(e) => { e.stopPropagation(); handleEdit(selectedFishSchool); }}>Edit</button>
+      <button className="bg-red-500 text-white p-2 rounded hover:bg-red-600" onClick={() => handleDelete(selectedFishSchool)}>Delete</button>
+    </div>
 
-              </ul>
-            </div>
-          )}
-
+    {isFishTypeListVisible && (
+      <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
+        <h3 className="text-lg font-semibold mb-4">Fish Types</h3>
+        <ul>
+          {fishTypes.map((fishType) => (
+            <li key={fishType.commonName} className="mb-2">
+              <button className="text-blue-600 hover:underline" onClick={() => handleFishTypeSelect(fishType.commonName)}>{fishType.commonName}</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
           {selectedFishSchool && (
-            <div>
+            <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
               <h3>Viewing Fish School: {selectedFishSchool.name}</h3>
               <h3>Species Information:</h3>
               <p>Fish Name: {selectedFishSchool.fishType.commonName}</p>
@@ -215,24 +217,24 @@ const AquariumPage = ({ aquarium }) => {
               <p>Decorations Present: {selectedFishSchool.fishType.decorationsPresent}</p>
             </div>
           )}
-
           {isDialogOpen && (
-            <div className="dialog">
-              <div className="dialog-content">
-                <h2>Edit Fish School</h2>
-                <input
-                  type="text"
-                  placeholder="Enter new amount of fish"
-                  value={newFishSchoolAmount}
-                  onChange={(e) => setNewFishSchoolAmount(e.target.value)}
-                />
-                <button onClick={handleDialogSave}>Save</button>
-                <button onClick={handleDialogClose}>Cancel</button>
-              </div>
-            </div>
-          )}
+      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="dialog-content bg-white p-8 rounded-lg shadow-xl w-1/3">
+          <h2 className="text-xl font-semibold mb-4">Edit Fish School</h2>
+          <input
+            type="text"
+            placeholder="Enter new amount of fish"
+            value={newFishSchoolAmount}
+            onChange={(e) => setNewFishSchoolAmount(e.target.value)}
+            className="border p-2 w-full rounded mb-4"
+          />
+          <button className="bg-green-500 text-white p-2 rounded mr-2 hover:bg-green-600" onClick={handleDialogSave}>Save</button>
+          <button className="bg-gray-500 text-white p-2 rounded hover:bg-gray-600" onClick={handleDialogClose}>Cancel</button>
         </div>
-      );
+      </div>
+    )}
+  </div>
+);
     };
 
 const Edit = () => {
