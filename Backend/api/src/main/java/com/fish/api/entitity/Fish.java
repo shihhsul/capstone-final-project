@@ -30,35 +30,35 @@ public class Fish {
     @Column(name = "careLevel")
     private String careLevel = "";
     @Column(name = "averageSize")
-    private int averageSize;
+    private String averageSize;
     @Column(name = "lifespan")
-    private Double lifespan;
+    private String lifespan;
 
     @Column(name = "phLow")
-    private Double phLow;
+    private String phLow;
     @Column(name = "phHigh")
-    private Double phHigh;
+    private String phHigh;
 
     @Column(name = "tempLow")
-    private Double tempLow;
+    private String tempLow;
     @Column(name = "tempHigh")
-    private Double tempHigh;
+    private String tempHigh;
 
     @Column(name = "hardLow")
-    private Double hardLow;
+    private String hardLow;
     @Column(name = "hardHigh")
-    private Double hardHigh;
+    private String hardHigh;
 
     @Column(name = "swimmingLevel")
     private String swimmingLevel;
     @Column(name = "ownAggressiveness")
-    private boolean isAggressiveSelf = false;
+    private String isAggressiveSelf = "false";
     @Column(name = "otherAggressiveness")
-    private boolean isAggressiveOther = false;
+    private String isAggressiveOther = "false";
     @Column(name = "idealNumber")
-    private int idealNumber;
+    private String idealNumber;
     @Column(name = "livePlants")
-    private boolean livePlants = false;
+    private String livePlants = "";
     @Column(name = "foodType")
     private String foodType = "";
     @Column(name = "foodOptions")
@@ -72,18 +72,18 @@ public class Fish {
     @Column(name = "decorations")
     private String decorations = "";
     @Column(name = "tankSize")
-    private int minimumTankSize;
+    private String minimumTankSize;
     @Column(name = "picUrl")
     private String picUrl;
 
     public Fish() {
     }
 
-    public Fish(String commonName, String scientificName, String speciesGroup, String careLevel, int averageSize,
-            Double lifespan, Double phLow, Double phHigh, Double tempLow, Double tempHigh, Double hardLow,
-            Double hardHigh, String swimmingLevel, boolean isAggressiveSelf, boolean isAggressiveOther, int idealNumber,
-            boolean livePlants, String foodType, String foodOptions, String substrate, String light, String current,
-            String decorations, int minimumTankSize, String picUrl) {
+    public Fish(String commonName, String scientificName, String speciesGroup, String careLevel, String averageSize,
+            String lifespan, String phLow, String phHigh, String tempLow, String tempHigh, String hardLow,
+            String hardHigh, String swimmingLevel, String isAggressiveSelf, String isAggressiveOther,
+            String idealNumber, String livePlants, String foodType, String foodOptions, String substrate, String light,
+            String current, String decorations, String minimumTankSize, String picUrl) {
         this.commonName = commonName;
         this.scientificName = scientificName;
         this.speciesGroup = speciesGroup;
@@ -143,67 +143,67 @@ public class Fish {
         this.careLevel = careLevel;
     }
 
-    public int getAverageSize() {
+    public String getAverageSize() {
         return this.averageSize;
     }
 
-    public void setAverageSize(int averageSize) {
+    public void setAverageSize(String averageSize) {
         this.averageSize = averageSize;
     }
 
-    public Double getLifespan() {
+    public String getLifespan() {
         return this.lifespan;
     }
 
-    public void setLifespan(Double lifespan) {
+    public void setLifespan(String lifespan) {
         this.lifespan = lifespan;
     }
 
-    public Double getPhLow() {
+    public String getPhLow() {
         return this.phLow;
     }
 
-    public void setPhLow(Double phLow) {
+    public void setPhLow(String phLow) {
         this.phLow = phLow;
     }
 
-    public Double getPhHigh() {
+    public String getPhHigh() {
         return this.phHigh;
     }
 
-    public void setPhHigh(Double phHigh) {
+    public void setPhHigh(String phHigh) {
         this.phHigh = phHigh;
     }
 
-    public Double getTempLow() {
+    public String getTempLow() {
         return this.tempLow;
     }
 
-    public void setTempLow(Double tempLow) {
+    public void setTempLow(String tempLow) {
         this.tempLow = tempLow;
     }
 
-    public Double getTempHigh() {
+    public String getTempHigh() {
         return this.tempHigh;
     }
 
-    public void setTempHigh(Double tempHigh) {
+    public void setTempHigh(String tempHigh) {
         this.tempHigh = tempHigh;
     }
 
-    public Double getHardLow() {
+    public String getHardLow() {
         return this.hardLow;
     }
 
-    public void setHardLow(Double hardLow) {
+    public void setHardLow(String hardLow) {
         this.hardLow = hardLow;
     }
 
-    public Double getHardHigh() {
+    public String getHardHigh() {
         return this.hardHigh;
     }
 
-    public void setHardHigh(Double hardHigh) {
+    public void setHardHigh(String hardHigh) {
         this.hardHigh = hardHigh;
     }
 
@@ -215,47 +215,35 @@ public class Fish {
         this.swimmingLevel = swimmingLevel;
     }
 
-    public boolean isIsAggressiveSelf() {
+    public String getIsAggressiveSelf() {
         return this.isAggressiveSelf;
     }
 
-    public boolean getIsAggressiveSelf() {
-        return this.isAggressiveSelf;
-    }
-
-    public void setIsAggressiveSelf(boolean isAggressiveSelf) {
+    public void setIsAggressiveSelf(String isAggressiveSelf) {
         this.isAggressiveSelf = isAggressiveSelf;
     }
 
-    public boolean isIsAggressiveOther() {
+    public String getIsAggressiveOther() {
         return this.isAggressiveOther;
     }
 
-    public boolean getIsAggressiveOther() {
-        return this.isAggressiveOther;
-    }
-
-    public void setIsAggressiveOther(boolean isAggressiveOther) {
+    public void setIsAggressiveOther(String isAggressiveOther) {
         this.isAggressiveOther = isAggressiveOther;
     }
 
-    public int getIdealNumber() {
+    public String getIdealNumber() {
         return this.idealNumber;
     }
 
-    public void setIdealNumber(int idealNumber) {
+    public void setIdealNumber(String idealNumber) {
         this.idealNumber = idealNumber;
     }
 
-    public boolean isLivePlants() {
+    public String getLivePlants() {
         return this.livePlants;
     }
 
-    public boolean getLivePlants() {
-        return this.livePlants;
-    }
-
-    public void setLivePlants(boolean livePlants) {
+    public void setLivePlants(String livePlants) {
         this.livePlants = livePlants;
     }
 
@@ -307,11 +295,11 @@ public class Fish {
         this.decorations = decorations;
     }
 
-    public int getMinimumTankSize() {
+    public String getMinimumTankSize() {
         return this.minimumTankSize;
     }
 
-    public void setMinimumTankSize(int minimumTankSize) {
+    public void setMinimumTankSize(String minimumTankSize) {
         this.minimumTankSize = minimumTankSize;
     }
 
@@ -321,6 +309,16 @@ public class Fish {
 
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                commonName, scientificName, speciesGroup, careLevel, averageSize,
+                lifespan, phLow, phHigh, tempLow, tempHigh, hardLow, hardHigh,
+                swimmingLevel, isAggressiveSelf, isAggressiveOther, idealNumber,
+                livePlants, foodType, foodOptions, substrate, light, current,
+                decorations, minimumTankSize, picUrl);
     }
 
 }

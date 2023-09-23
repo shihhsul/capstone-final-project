@@ -3,6 +3,16 @@ import { useLocation } from "react-router-dom";
 import { UserContext } from '../UserContext';
 import { useNavigate } from "react-router-dom";
 import fish from '../FishImages/download.jpg'
+
+import AfricanCichlid1Img from '../FishImages/AfricanCichlids1.jpg'
+import AfricanCichlid2Img from '../FishImages/AfricanCichlids2.jpg'
+
+const imageMap = {
+  "AfricanCichlids1": AfricanCichlid1Img,
+  "AfricanCichlids2": AfricanCichlid2Img,
+};
+
+
 const AquariumPage = ({ aquarium }) => {
   if (!aquarium) {
     return <p>No selected aquarium.</p>;
@@ -161,9 +171,8 @@ const AquariumPage = ({ aquarium }) => {
                 : "fish-school bg-gray-200 p-2 rounded mt-2 cursor-pointer"
             }
           >
-            <img src={fish} alt={`${"error"} image`} className="w-10 h-10 rounded-full mr-2" /> 
-            Fish School {i + 1}: {fishSchool.name} <br />
-            Fish Name: {fishSchool.fishType.commonName} <br />
+            <img src={imageMap[fishSchool.fishType.picUrl]} alt={`${"error"} image`} className="w-10 h-10 rounded-full mr-2" /> 
+            Fish Species: {fishSchool.fishType.commonName} <br />
             Fish Amount: {fishSchool.amountFish}
           </li>
         ))}
@@ -182,7 +191,7 @@ const AquariumPage = ({ aquarium }) => {
       {fishTypes.map((fishType) => (
         <li key={fishType.commonName} className="mb-2">
           <div className="flex items-center">
-          <img src={fish} alt={`${fishType.commonName} image`} className="w-10 h-10 rounded-full mr-2" /> 
+          <img src={imageMap[fishType.picUrl]} alt={`${fishType.commonName} image`} className="w-10 h-10 rounded-full mr-2" /> 
             {/* <img src={fishType.pictureUrl} alt={`${fishType.commonName} image`} className="w-10 h-10 rounded-full mr-2" /> */}
             <button className="text-blue-600 hover:underline" onClick={() => handleFishTypeSelect(fishType.commonName)}>
               {fishType.commonName}
@@ -197,7 +206,7 @@ const AquariumPage = ({ aquarium }) => {
           {selectedFishSchool && (
             <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
               <h3>Viewing Fish School: {selectedFishSchool.name}</h3>
-              <img src={fish} alt={`${"error"} image`} className="w-10 h-10 rounded-full mr-2" /> 
+              <img src={imageMap[selectedFishSchool.fishType.picUrl]}  alt={`${"error"} image`} className="w-10 h-10 rounded-full mr-2" /> 
               <h3>Species Information:</h3>
               <p>Fish Name: {selectedFishSchool.fishType.commonName}</p>
               <p>Scientific Name: {selectedFishSchool.fishType.scientificName}</p>
@@ -210,20 +219,20 @@ const AquariumPage = ({ aquarium }) => {
               <p>Food Options: {selectedFishSchool.fishType.foodOptions}</p>
               <p>FoodType: {selectedFishSchool.fishType.foodType}</p>
               <p>Ideal Number: {selectedFishSchool.fishType.idealNumber}</p>
-              <p>Aggressive to other Species?: {selectedFishSchool.fishType.isAggressiveToOtherSpecies}</p>
-              <p>Aggressive to same Species?: {selectedFishSchool.fishType.isAggressiveToSameSpecies}</p>
+              <p>Aggressive to other Species?: {selectedFishSchool.fishType.isAggressiveOther}</p>
+              <p>Aggressive to same Species?: {selectedFishSchool.fishType.isAggressiveSelf}</p>
               <p>Swimming Level: {selectedFishSchool.fishType.swimmingLevel}</p>
 
               <h3>Tank Requirements:</h3>
-              <p>Temperature Range: {selectedFishSchool.fishType.temperatureRange}</p>
-              <p>pH Range: {selectedFishSchool.fishType.phRange}</p>
-              <p>Water Hardness: {selectedFishSchool.fishType.waterHardness}</p>
-              <p>Minimum Tank Size: {selectedFishSchool.fishType.minTankSize}</p>
+              <p>Temperature Range: {selectedFishSchool.fishType.tempLow}-{selectedFishSchool.fishType.tempHigh} °F</p>
+              <p>pH Range: {selectedFishSchool.fishType.phLow}-{selectedFishSchool.fishType.phHigh}</p>
+              <p>Water Hardness: {selectedFishSchool.fishType.hardLow}-{selectedFishSchool.fishType.hardHigh}</p>
+              <p>Minimum Tank Size: {selectedFishSchool.fishType.minimumTankSize}</p>
               <p>Substrate: {selectedFishSchool.fishType.substrate}</p>
-              <p>Light Level: {selectedFishSchool.fishType.lightLevel}</p>
+              <p>Light Level: {selectedFishSchool.fishType.light}</p>
               <p>Live Plants: {selectedFishSchool.fishType.livePlants}</p>
-              <p>Current Level: {selectedFishSchool.fishType.currentLevel}</p>
-              <p>Decorations Present: {selectedFishSchool.fishType.decorationsPresent}</p>
+              <p>Current Level: {selectedFishSchool.fishType.current}</p>
+              <p>Decorations Present: {selectedFishSchool.fishType.decorations}</p>
             </div>
           )}
           {isDialogOpen && (
