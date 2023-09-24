@@ -46,9 +46,14 @@ public class AquariumController {
         return this.AquariumServ.getAllAquariums();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("findby/{id}")
     public Aquarium findAquariumById(@PathVariable String id) {
         return this.AquariumServ.getAquariumById(id);
+    }
+
+    @GetMapping("compatibility/{id}")
+    public String[] findCompabilityById(@PathVariable String id) {
+        return this.AquariumServ.getAquariumCompability(id);
     }
 
     @PutMapping("/modify/{id}")
