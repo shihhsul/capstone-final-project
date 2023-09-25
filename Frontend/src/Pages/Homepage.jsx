@@ -9,13 +9,9 @@ import fishFood from "../Homepage Components/fish_1.png";
 import "../Homepage Components/Homepage.css";
 
 const Homepage = () => {
-  // const location = useLocation();
-  // const message = location.state?.message || "";
-
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // Hide the default MP4 control bar
     videoRef.current.controls = false;
   }, []);
 
@@ -58,7 +54,6 @@ const Homepage = () => {
         </div>
       </div>
 
-      {/* <div className='h-1 bg-black w-full'></div> */}
       <h1 className='text-center text-2xl font-bold text-yellow-500 p-8'>
         App Details
       </h1>
@@ -71,14 +66,25 @@ const Homepage = () => {
       <div className='flex justify-center items-center'>
         <ul className='flex text-white font-bold mx-auto'>
           <div
-            className='flex flex-col items-center mx-4 px-4 cursor-pointer clickable-div'
+            className={
+              `flex flex-col items-center mx-4 px-4 cursor-pointer clickable-div ${selected === "Fish Compatibility" ? "expanded" : ""}`
+            }
             onClick={() => toggleInfo("Fish Compatibility")}
           >
             <img className='w-28 h-28' src={bigFish} alt='largeFish' />
             <li className=''>
               Fish Compatibility
               {selected === "Fish Compatibility" && (
-                <div className='text-gray-400'>ff</div>
+                <div className='info-container text-gray-400'>
+                  When setting up an aquarium, it's essential to know which fish
+                  species can coexist peacefully. Not all fish get along; some
+                  species are territorial, while others may have incompatible
+                  water condition needs. Using our app, you can research the
+                  environmental requirements of your chosen fish to ensure they
+                  can live harmoniously. For instance, mixing aggressive and
+                  passive species is usually a recipe for stress and even
+                  casualties.
+                </div>
               )}
             </li>
           </div>
@@ -90,8 +96,13 @@ const Homepage = () => {
             <li>
               Saltwater Vs Freshwater
               {selected === "Saltwater Vs Freshwater" && (
-                <div className='text-gray-400'>
-                  Saltwater Vs Freshwater Info Here
+                <div className='info-container text-gray-400'>
+                  Choosing between saltwater and freshwater aquariums is a
+                  foundational decision that impacts everything from equipment
+                  to fish selection. Saltwater aquariums typically host more
+                  colorful and exotic species but require a more complex setup
+                  and maintenance routine. Freshwater tanks are easier for
+                  beginners but offer fewer types of fish.
                 </div>
               )}
             </li>
@@ -104,7 +115,17 @@ const Homepage = () => {
             <li>
               Optimal Housing
               {selected === "Optimal Housing" && (
-                <div className='text-gray-400'>Optimal Housing Info Here</div>
+                <div className='text-gray-400 info-container'>
+                  Creating an optimal environment goes beyond just adding water
+                  and fish into a tank. Consider factors like lighting,
+                  temperature, and filtration when setting up your aquarium. Use
+                  a heater to maintain a consistent water temperature and a
+                  high-quality filter to remove impurities. Additionally,
+                  plants, rocks, and other decorations can provide natural
+                  hiding spots for fish, which can help reduce stress. The size
+                  of your tank matters too; overcrowding can lead to poor water
+                  quality and stressed fish.
+                </div>
               )}
             </li>
           </div>
@@ -116,7 +137,16 @@ const Homepage = () => {
             <li>
               Fish Diet
               {selected === "Fish Diet" && (
-                <div className='text-gray-400'>Fish Diet Info Here</div>
+                <div className='text-gray-400 info-container'>
+                  Not all fish eat the same diet, and what you feed them
+                  significantly impacts their health and longevity. Some fish
+                  are herbivores, some carnivores, and some omnivores. Always
+                  consult specific care guides to know what diet is best for
+                  your fish species. In addition to commercial fish food,
+                  consider supplements like fresh vegetables for herbivores or
+                  frozen brine shrimp for carnivores. Remember, overfeeding can
+                  lead to poor water quality, so portion control is key.
+                </div>
               )}
             </li>
           </div>

@@ -22,9 +22,9 @@ const Nav = () => {
           <li className='ml-5'>
             <Link
               className='text-2xl text-white font-bold no-underline hover:opacity-80'
-              to='/Test'
+              to='/About'
             >
-              Test
+              About
             </Link>
           </li>
           <li className='ml-5'>
