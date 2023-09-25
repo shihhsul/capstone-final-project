@@ -1,7 +1,11 @@
 package com.fish.api.entitity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.hibernate.result.Output;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -77,8 +81,9 @@ public class Aquarium {
         String[] output = new String[16];
         String temp = "";
         int fishCount = 0;
+        String warnings = "";
 
-        output[0] = "Warning area";
+        output[0] = "Valid Tank";
         // carelevel
         temp = "Easy";
         for (FishSchool fishSchool : this.fishSchools) {
@@ -106,7 +111,7 @@ public class Aquarium {
             fishCount = fishCount + fishSchool.getAmountFish();
         }
         sum = sum / Double.valueOf(fishCount);
-        output[2] = "Average Size: " + sum;
+        output[2] = "Average Size: " + sum + " inches";
 
         sum = 0;
         for (FishSchool fishSchool : this.fishSchools) {
@@ -114,7 +119,7 @@ public class Aquarium {
                     * Double.valueOf(fishSchool.getAmountFish());
         }
         sum = sum / Double.valueOf(fishCount);
-        output[3] = "Average Lifespan: " + sum;
+        output[3] = "Average Lifespan: " + sum + " years";
 
         Double phLow = null;
         Double phHigh = null;
@@ -130,7 +135,13 @@ public class Aquarium {
                 phHigh = Double.valueOf(fishSchool.getFishType().getPhHigh());
             }
         }
-        output[4] = "Acceptable pH range: " + phLow.toString() + "-" + phHigh.toString();
+
+        if (phHigh < phLow) {
+            warnings = warnings + "pH Range,";
+            output[4] = "WARN-No Valid pH Range";
+        } else {
+            output[4] = "Acceptable pH range: " + phLow.toString() + "-" + phHigh.toString();
+        }
 
         Double tempLow = null;
         Double tempHigh = null;
@@ -146,7 +157,12 @@ public class Aquarium {
                 tempHigh = Double.valueOf(fishSchool.getFishType().getTempHigh());
             }
         }
-        output[5] = "Acceptable temperature range: " + tempLow.toString() + "-" + tempHigh.toString();
+        if (tempHigh < tempLow) {
+            warnings = warnings + "Temperature Range,";
+            output[5] = "WARN-No Valid temperature Range";
+        } else {
+            output[5] = "Acceptable temperature range: " + tempLow.toString() + "-" + tempHigh.toString() + "°F";
+        }
 
         Double hardLow = null;
         Double hardHigh = null;
@@ -162,7 +178,13 @@ public class Aquarium {
                 hardHigh = Double.valueOf(fishSchool.getFishType().getHardHigh());
             }
         }
-        output[6] = "Acceptable Hardness range: " + hardLow.toString() + "-" + hardHigh.toString();
+
+        if (hardHigh < hardLow) {
+            warnings = warnings + "Hardness Range,";
+            output[6] = "WARN-No Valid Hardness Range";
+        } else {
+            output[6] = "Acceptable Hardness range: " + hardLow.toString() + "-" + hardHigh.toString() + " dGh";
+        }
 
         temp = "";
         for (FishSchool fishSchool : this.fishSchools) {
@@ -175,7 +197,8 @@ public class Aquarium {
         if (temp.equals("")) {
             output[7] = "No Same Species Conflicts";
         } else {
-            output[7] = "The following species are aggressive to the same species: " + temp;
+            output[7] = "WARN-The following species are aggressive to the same species: " + temp;
+            warnings = warnings + "Self Species Conflict,";
         }
 
         temp = "";
@@ -188,24 +211,61 @@ public class Aquarium {
                 }
             }
         }
-        if (temp.equals("")) {
+        if (temp.equals("") || this.fishSchools.size() < 2) {
             output[8] = "No Other Species Conflicts";
         } else {
-            output[8] = "The following species have issues with other fish species: " + temp;
+            output[8] = "WARN-The following species have issues with other fish species: " + temp;
+            warnings = warnings + "Other Species Conflict,";
         }
 
         output[9] = "Live Plants Needed: No";
         for (FishSchool fishSchool : this.fishSchools) {
             if (fishSchool.getFishType().getLivePlants().equals("Yes")) {
-                output[7] = "Live Plants Needed: Yes";
+                output[9] = "Live Plants Needed: Yes";
             }
         }
 
         // placeholder
-        output[10] = "food options placeholder";
-
-        // placeholder
         output[11] = "Substrate placeholder";
+        Set<String> substrate = new HashSet<>();
+        boolean isAtLeastOne = false;
+        for (FishSchool fishSchool : this.fishSchools) {
+            String[] array = fishSchool.getFishType().getSubstrate().split("/");
+            if (substrate.size() == 0 && !array[0].equals("Any")) {
+                for (String current : array) {
+                    substrate.add(current);
+                }
+                isAtLeastOne = true;
+            } else {
+                Set currentSubstrate = new HashSet<>();
+                for (String current : array) {
+                    currentSubstrate.add(current);
+                }
+                if (currentSubstrate.contains("Any")) {
+
+                } else {
+                    currentSubstrate.retainAll(substrate);
+                    if (currentSubstrate.size() == 0) {
+                        output[11] = "WARN-No valid substrate";
+                        warnings = warnings + "Substrate,";
+                    } else {
+                        substrate = currentSubstrate;
+                    }
+                }
+            }
+        }
+        temp = "";
+        if (isAtLeastOne && substrate.size() > 0) {
+            for (String possibleSubstrate : substrate) {
+                temp = temp + possibleSubstrate + ",";
+            }
+        }
+        if (!isAtLeastOne) {
+            temp = "Any";
+        }
+        if (!output[11].equals("WARN-No valid substrate")) {
+            output[11] = "Possible Substrates: " + temp;
+        }
 
         temp = "";
         temp = "Moderate";
@@ -213,7 +273,8 @@ public class Aquarium {
         for (FishSchool fishSchool : this.fishSchools) {
             if (fishSchool.getFishType().getLight().equals("Low")) {
                 if (temp.equals("Moderate-High")) {
-                    temp = "Wide Range of Current Needs";
+                    temp = "WARN-Wide Range of Light Needs";
+                    warnings = warnings + "Light,";
                     hasModerate = false;
                     break;
                 } else {
@@ -225,7 +286,8 @@ public class Aquarium {
             }
             if (fishSchool.getFishType().getLight().equals("High")) {
                 if (temp.equals("Low-Moderate")) {
-                    temp = "Wide Range of Current Needs";
+                    temp = "WARN-Wide Range of Light Needs";
+                    warnings = warnings + "Light,";
                     hasModerate = false;
                     break;
                 } else {
@@ -239,7 +301,11 @@ public class Aquarium {
         if (temp.equals("Moderate-High") && !hasModerate) {
             temp = "High";
         }
-        output[12] = "Recommended Light: " + temp;
+        if (temp.equals("WARN-Wide Range of Light Needs")) {
+            output[12] = temp;
+        } else {
+            output[12] = "Recommended Light: " + temp;
+        }
 
         temp = "";
         temp = "Moderate";
@@ -247,7 +313,7 @@ public class Aquarium {
         for (FishSchool fishSchool : this.fishSchools) {
             if (fishSchool.getFishType().getCurrent().equals("Low")) {
                 if (temp.equals("Moderate-High")) {
-                    temp = "Wide Range of Current Needs";
+                    temp = "WARN-Wide Range of Current Needs";
                     hasModerate = false;
                     break;
                 } else {
@@ -259,7 +325,7 @@ public class Aquarium {
             }
             if (fishSchool.getFishType().getCurrent().equals("High")) {
                 if (temp.equals("Low-Moderate")) {
-                    temp = "Wide Range of Current Needs";
+                    temp = "WARN-Wide Range of Current Needs";
                     hasModerate = false;
                     break;
                 } else {
@@ -273,7 +339,11 @@ public class Aquarium {
         if (temp.equals("Moderate-High") && !hasModerate) {
             temp = "High";
         }
-        output[13] = "Recommended Current: " + temp;
+        if (temp.equals("WARN-Wide Range of Current Needs")) {
+            output[13] = temp;
+        } else {
+            output[13] = "Recommended Current: " + temp;
+        }
 
         temp = "";
         temp = "Moderate";
@@ -281,7 +351,8 @@ public class Aquarium {
         for (FishSchool fishSchool : this.fishSchools) {
             if (fishSchool.getFishType().getDecorations().equals("Low")) {
                 if (temp.equals("Moderate-High")) {
-                    temp = "Wide Range of Current Needs";
+                    temp = "WARN-Wide Range of Decorations Needs";
+                    warnings = warnings + "Decorations";
                     hasModerate = false;
                     break;
                 } else {
@@ -293,7 +364,8 @@ public class Aquarium {
             }
             if (fishSchool.getFishType().getDecorations().equals("High")) {
                 if (temp.equals("Low-Moderate")) {
-                    temp = "Wide Range of Current Needs";
+                    temp = "WARN-Wide Range of Decorations Needs";
+                    warnings = warnings + "Decorations";
                     hasModerate = false;
                     break;
                 } else {
@@ -307,11 +379,34 @@ public class Aquarium {
         if (temp.equals("Moderate-High") && !hasModerate) {
             temp = "High";
         }
-        output[14] = "Recommended Decorations: " + temp;
+        if (temp.equals("WARN-Wide Range of Decorations Needs")) {
+            output[14] = temp;
+        } else {
+            output[14] = "Recommended Decorations: " + temp;
+        }
 
         // placeholder
-        output[15] = "TankSize Placeholder";
-
+        Double tankSize = 0.0;
+        temp = "";
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (fishSchool.getFishType().getIdealNumber().equals("Any")) {
+                tankSize = tankSize + Double.valueOf(fishSchool.getFishType().getMinimumTankSize());
+                temp = temp + fishSchool.getFishType().getCommonName() + "(" + fishSchool.getFishType().getIdealNumber()
+                        + "), ";
+            } else {
+                tankSize = tankSize + (Double.valueOf(fishSchool.getAmountFish())
+                        / Double.valueOf(fishSchool.getFishType().getIdealNumber()))
+                        * Double.valueOf(fishSchool.getFishType().getMinimumTankSize());
+            }
+        }
+        if (temp.equals("")) {
+            output[15] = "Tank Size: " + tankSize + " Gallons";
+        } else {
+            output[15] = "WARN-Tanksize assumes ideal number for " + temp + " Tank Size: " + tankSize + " Gallons";
+        }
+        if (!warnings.equals("")) {
+            output[0] = "Warnings:" + warnings;
+        }
         return output;
     }
 

@@ -79,5 +79,4 @@ public class FishSchool {
     public void setAmountFish(int amountFish) {
         this.amountFish = amountFish;
     }
-
 }

@@ -52,10 +52,10 @@ const AquariumPage = ({ aquarium }) => {
   let additionalInfo = null;
   if (stringArray.length > 0) {
     const firstElement = stringArray[0];
-    if(firstElement=="Warning area"){
+    if(firstElement!="Valid Tank"){
       additionalInfo = (
         <div>
-          <h3>Warning Invalid Tank:</h3>
+          <h3>Warning Invalid Tank</h3>
         </div>
       );
     }
