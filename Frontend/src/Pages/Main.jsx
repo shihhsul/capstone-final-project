@@ -95,8 +95,6 @@ const Main = () => {
 
   return (
     <div className="bg-gradient-to-b from-light-blue-300 to-deep-blue-900 min-h-screen p-8">
-      {message && <h2 className="text-2xl font-bold mb-4">{message}</h2>}
-  
       {userData && (
         <div className="bg-white p-6 rounded-lg shadow-md mb-8">
           <h2 className="text-xl font-semibold mb-4">Hello {userData.fullName}</h2>
@@ -120,7 +118,6 @@ const Main = () => {
         <div className="bg-white p-6 rounded-lg shadow-md mb-8">
           <h2 className="text-xl font-semibold mb-4">Selected Aquarium</h2>
           <p className="mb-2"><span className="font-medium">Name:</span> {selectedAquarium.name}</p>
-          {/* add aqua properties */}
         </div>
       )}
   

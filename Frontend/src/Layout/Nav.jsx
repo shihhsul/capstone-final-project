@@ -30,7 +30,7 @@ const Nav = () => {
           <li className='ml-5'>
             <Link
               className='text-xl text-yellow-400 font-bold no-underline hover:opacity-80'
-              to='/'
+              to='/Login'
             >
               Login
             </Link>

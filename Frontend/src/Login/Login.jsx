@@ -35,7 +35,7 @@ export const Login = (props) => {
         const userDataFromResponse = await response.json();
         console.log("UserData from API:", userDataFromResponse);
         setUserData(userDataFromResponse);
-        navigate("/Homepage", { state: { message: `Thanks for registering ${username}` } });
+        navigate("/Main", { state: { message: `Thanks for registering ${username}` } });
         console.log(userData);
       } else {
         console.error("Login failed");

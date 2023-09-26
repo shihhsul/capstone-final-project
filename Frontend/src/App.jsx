@@ -26,8 +26,8 @@ function App() {
         </Layout>
       ) : (
         <Routes>
-          <Route path='/Homepage' element={<Homepage />} />
-          <Route path='/' element={<Auth />} />
+          <Route path='/' element={<Homepage />} />
+          <Route path='/Login' element={<Auth />} />
         </Routes>
       )}
     </UserProvider>
