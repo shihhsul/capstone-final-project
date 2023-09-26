@@ -66,4 +66,20 @@ public class AquariumService {
         }
         return false;
     }
+
+    public String[] getAquariumCompability(String id) {
+        Optional<Aquarium> Aquarium = AquariumRepo.findById(id);
+        if (Aquarium.isPresent()) {
+            return Aquarium.get().aquariumCompatibility();
+        }
+        return null;
+    }
+
+    public String[] getEbaySearches(String id) {
+        Optional<Aquarium> Aquarium = AquariumRepo.findById(id);
+        if (Aquarium.isPresent()) {
+            return Aquarium.get().tankInfo();
+        }
+        return null;
+    }
 }

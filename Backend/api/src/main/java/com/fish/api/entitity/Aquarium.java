@@ -1,7 +1,11 @@
 package com.fish.api.entitity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.hibernate.result.Output;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -73,12 +77,419 @@ public class Aquarium {
         return false;
     }
 
-    public String[] aquariumCompatibility() {
-        String[] output = new String[0];
+    public String getCareLevel() {
+        String temp = "Easy";
         for (FishSchool fishSchool : this.fishSchools) {
+            if (temp.equals("Easy")) {
+                if (fishSchool.getFishType().getCareLevel().equals("Moderate")
+                        || fishSchool.getFishType().getCareLevel().equals("Hard")) {
+                    temp = fishSchool.getFishType().getCareLevel();
+                }
+            } else {
+                if (fishSchool.getFishType().getCareLevel().equals("Hard")) {
+                    temp = fishSchool.getFishType().getCareLevel();
+                }
+            }
+            if (temp.equals("Hard")) {
+                break;
+            }
+        }
+        return ("Highest Care Level: " + temp);
+    }
 
+    public String getAverageSize() {
+        double sum = 0;
+        int fishCount = 0;
+        for (FishSchool fishSchool : this.fishSchools) {
+            sum = sum + Double.parseDouble(fishSchool.getFishType().getAverageSize())
+                    * Double.valueOf(fishSchool.getAmountFish());
+            fishCount = fishCount + fishSchool.getAmountFish();
+        }
+        sum = sum / Double.valueOf(fishCount);
+        return ("Average Size: " + sum + " inches");
+    }
+
+    public String getAverageLifeSpan() {
+        double sum = 0;
+        int fishCount = 0;
+        for (FishSchool fishSchool : this.fishSchools) {
+            sum = sum + Double.parseDouble(fishSchool.getFishType().getLifespan())
+                    * Double.valueOf(fishSchool.getAmountFish());
+            fishCount = fishCount + fishSchool.getAmountFish();
+        }
+        sum = sum / Double.valueOf(fishCount);
+        return ("Average Lifespan: " + sum + " years");
+    }
+
+    public String getpH() {
+        Double phLow = null;
+        Double phHigh = null;
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (phLow == null) {
+                phLow = Double.valueOf(fishSchool.getFishType().getPhLow());
+                phHigh = Double.valueOf(fishSchool.getFishType().getPhHigh());
+            }
+            if (phLow < Double.valueOf(fishSchool.getFishType().getPhLow())) {
+                phLow = Double.valueOf(fishSchool.getFishType().getPhLow());
+            }
+            if (phHigh > Double.valueOf(fishSchool.getFishType().getPhHigh())) {
+                phHigh = Double.valueOf(fishSchool.getFishType().getPhHigh());
+            }
+        }
+
+        if (phHigh < phLow) {
+            return ("WARN-No Valid pH Range");
+        } else {
+            return ("Acceptable pH range: " + phLow.toString() + "-" + phHigh.toString());
+        }
+    }
+
+    public String getTemp() {
+        Double tempLow = null;
+        Double tempHigh = null;
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (tempLow == null) {
+                tempLow = Double.valueOf(fishSchool.getFishType().getTempLow());
+                tempHigh = Double.valueOf(fishSchool.getFishType().getTempHigh());
+            }
+            if (tempLow < Double.valueOf(fishSchool.getFishType().getTempLow())) {
+                tempLow = Double.valueOf(fishSchool.getFishType().getTempLow());
+            }
+            if (tempHigh > Double.valueOf(fishSchool.getFishType().getTempHigh())) {
+                tempHigh = Double.valueOf(fishSchool.getFishType().getTempHigh());
+            }
+        }
+        if (tempHigh < tempLow) {
+            return ("WARN-No Valid temperature Range");
+        } else {
+            return ("Acceptable temperature range: " + tempLow.toString() + "-" + tempHigh.toString() + "°F");
+        }
+    }
+
+    public String getHardness() {
+        Double hardLow = null;
+        Double hardHigh = null;
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (hardLow == null) {
+                hardLow = Double.valueOf(fishSchool.getFishType().getHardLow());
+                hardHigh = Double.valueOf(fishSchool.getFishType().getHardHigh());
+            }
+            if (hardLow < Double.valueOf(fishSchool.getFishType().getHardLow())) {
+                hardLow = Double.valueOf(fishSchool.getFishType().getHardLow());
+            }
+            if (hardHigh > Double.valueOf(fishSchool.getFishType().getHardHigh())) {
+                hardHigh = Double.valueOf(fishSchool.getFishType().getHardHigh());
+            }
+        }
+
+        if (hardHigh < hardLow) {
+            return ("WARN-No Valid Hardness Range");
+        } else {
+            return ("Acceptable Hardness range: " + hardLow.toString() + "-" + hardHigh.toString() + " dGh");
+        }
+    }
+
+    public String getSelfConflict() {
+        String temp = "";
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (!fishSchool.getFishType().getIsAggressiveSelf().equals("Peaceful")) {
+                if (fishSchool.getAmountFish() > 1) {
+                    temp = temp + fishSchool.getFishType().getCommonName() + ",";
+                }
+            }
+        }
+        if (temp.equals("")) {
+            return ("No Same Species Conflicts");
+        } else {
+            return ("WARN-The following species are aggressive to the same species: " + temp);
+        }
+    }
+
+    public String getOtherConflict() {
+        String temp = "";
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (!fishSchool.getFishType().getIsAggressiveOther().equals("Peaceful")) {
+                if (fishSchool.getFishType().getIsAggressiveOther().equals("Semi Aggressive")) {
+                    temp = temp + fishSchool.getFishType().getCommonName() + "(Semi Aggressive),";
+                } else {
+                    temp = temp + fishSchool.getFishType().getCommonName() + "(Aggressive),";
+                }
+            }
+        }
+        if (temp.equals("") || this.fishSchools.size() < 2) {
+            return ("No Other Species Conflicts");
+        } else {
+            return ("WARN-The following species have issues with other fish species: " + temp);
+        }
+    }
+
+    public String getLivePlants() {
+        String output = "Live Plants Needed: No";
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (fishSchool.getFishType().getLivePlants().equals("Yes")) {
+                output = "Live Plants Needed: Yes";
+            }
         }
         return output;
     }
 
+    public String getSubstrate() {
+        String output = "Substrate placeholder";
+        Set<String> substrate = new HashSet<>();
+        boolean isAtLeastOne = false;
+        for (FishSchool fishSchool : this.fishSchools) {
+            String[] array = fishSchool.getFishType().getSubstrate().split("/");
+            if (substrate.size() == 0 && !array[0].equals("Any")) {
+                for (String current : array) {
+                    substrate.add(current);
+                }
+                isAtLeastOne = true;
+            } else {
+                Set currentSubstrate = new HashSet<>();
+                for (String current : array) {
+                    currentSubstrate.add(current);
+                }
+                if (currentSubstrate.contains("Any")) {
+
+                } else {
+                    currentSubstrate.retainAll(substrate);
+                    if (currentSubstrate.size() == 0) {
+                        output = "WARN-No valid substrate";
+
+                    } else {
+                        substrate = currentSubstrate;
+                    }
+                }
+            }
+        }
+        String temp = "";
+        if (isAtLeastOne && substrate.size() > 0) {
+            for (String possibleSubstrate : substrate) {
+                temp = temp + possibleSubstrate + ",";
+            }
+        }
+        if (!isAtLeastOne) {
+            temp = "Any";
+        }
+        if (!output.equals("WARN-No valid substrate")) {
+            output = "Possible Substrates: " + temp;
+        }
+        return output;
+    }
+
+    public String getLight() {
+        String temp = "Moderate";
+        boolean hasModerate = false;
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (fishSchool.getFishType().getLight().equals("Low")) {
+                if (temp.equals("Moderate-High")) {
+                    temp = "WARN-Wide Range of Light Needs";
+                    hasModerate = false;
+                    break;
+                } else {
+                    temp = "Low-Moderate";
+                }
+            }
+            if (fishSchool.getFishType().getLight().equals("Moderate")) {
+                hasModerate = true;
+            }
+            if (fishSchool.getFishType().getLight().equals("High")) {
+                if (temp.equals("Low-Moderate")) {
+                    temp = "WARN-Wide Range of Light Needs";
+                    hasModerate = false;
+                    break;
+                } else {
+                    temp = "Moderate-High";
+                }
+            }
+        }
+        if (temp.equals("Low-Moderate") && !hasModerate) {
+            temp = "Low";
+        }
+        if (temp.equals("Moderate-High") && !hasModerate) {
+            temp = "High";
+        }
+        if (temp.equals("WARN-Wide Range of Light Needs")) {
+            return (temp);
+        } else {
+            return ("Recommended Light: " + temp);
+        }
+    }
+
+    public String getCurrent() {
+        String temp = "Moderate";
+        boolean hasModerate = false;
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (fishSchool.getFishType().getCurrent().equals("Low")) {
+                if (temp.equals("Moderate-High")) {
+                    temp = "WARN-Wide Range of Current Needs";
+                    hasModerate = false;
+                    break;
+                } else {
+                    temp = "Low-Moderate";
+                }
+            }
+            if (fishSchool.getFishType().getCurrent().equals("Moderate")) {
+                hasModerate = true;
+            }
+            if (fishSchool.getFishType().getCurrent().equals("High")) {
+                if (temp.equals("Low-Moderate")) {
+                    temp = "WARN-Wide Range of Current Needs";
+                    hasModerate = false;
+                    break;
+                } else {
+                    temp = "Moderate-High";
+                }
+            }
+        }
+        if (temp.equals("Low-Moderate") && !hasModerate) {
+            temp = "Low";
+        }
+        if (temp.equals("Moderate-High") && !hasModerate) {
+            temp = "High";
+        }
+        if (temp.equals("WARN-Wide Range of Current Needs")) {
+            return (temp);
+        } else {
+            return ("Recommended Current: " + temp);
+        }
+
+    }
+
+    public String getDecorations() {
+        String temp = "Moderate";
+        boolean hasModerate = false;
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (fishSchool.getFishType().getDecorations().equals("Low")) {
+                if (temp.equals("Moderate-High")) {
+                    temp = "WARN-Wide Range of Decorations Needs";
+                    hasModerate = false;
+                    break;
+                } else {
+                    temp = "Low-Moderate";
+                }
+            }
+            if (fishSchool.getFishType().getDecorations().equals("Moderate")) {
+                hasModerate = true;
+            }
+            if (fishSchool.getFishType().getDecorations().equals("High")) {
+                if (temp.equals("Low-Moderate")) {
+                    temp = "WARN-Wide Range of Decorations Needs";
+                    hasModerate = false;
+                    break;
+                } else {
+                    temp = "Moderate-High";
+                }
+            }
+        }
+        if (temp.equals("Low-Moderate") && !hasModerate) {
+            temp = "Low";
+        }
+        if (temp.equals("Moderate-High") && !hasModerate) {
+            temp = "High";
+        }
+        if (temp.equals("WARN-Wide Range of Decorations Needs")) {
+            return (temp);
+        } else {
+            return ("Recommended Decorations: " + temp);
+        }
+    }
+
+    public String getTankSize() {
+        Double tankSize = 0.0;
+        String temp = "";
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (fishSchool.getFishType().getIdealNumber().equals("Any")) {
+                tankSize = tankSize + Double.valueOf(fishSchool.getFishType().getMinimumTankSize());
+                temp = temp + fishSchool.getFishType().getCommonName() + "(" + fishSchool.getFishType().getIdealNumber()
+                        + "), ";
+            } else {
+                tankSize = tankSize + (Double.valueOf(fishSchool.getAmountFish())
+                        / Double.valueOf(fishSchool.getFishType().getIdealNumber()))
+                        * Double.valueOf(fishSchool.getFishType().getMinimumTankSize());
+            }
+        }
+        if (temp.equals("")) {
+            return ("Tank Size: " + tankSize + " Gallons");
+        } else {
+            return ("WARN-Tanksize assumes ideal number for " + temp + " Tank Size: " + tankSize + " Gallons");
+        }
+
+    }
+
+    public String[] aquariumCompatibility() {
+        String[] output = new String[16];
+        String warnings = "";
+
+        output[0] = "Valid Tank";
+        output[1] = this.getCareLevel();
+        output[2] = this.getAverageSize();
+        output[3] = this.getAverageLifeSpan();
+        output[4] = this.getpH();
+        if (output[4].startsWith("WARN")) {
+            warnings = warnings + "pH,";
+        }
+        output[5] = this.getTemp();
+        if (output[5].startsWith("WARN")) {
+            warnings = warnings + "temperature,";
+        }
+        output[6] = this.getHardness();
+        if (output[6].startsWith("WARN")) {
+            warnings = warnings + "hardness,";
+        }
+        output[7] = this.getSelfConflict();
+        if (output[7].startsWith("WARN")) {
+            warnings = warnings + "Same Species Conflict,";
+        }
+        output[8] = this.getOtherConflict();
+        if (output[8].startsWith("WARN")) {
+            warnings = warnings + "Other Species Conflict,";
+        }
+        output[9] = this.getLivePlants();
+        output[10] = this.getSubstrate();
+        if (output[10].startsWith("WARN")) {
+            warnings = warnings + "Substrate,";
+        }
+        output[11] = this.getLight();
+        if (output[11].startsWith("WARN")) {
+            warnings = warnings + "Light,";
+        }
+        output[12] = this.getCurrent();
+        if (output[12].startsWith("WARN")) {
+            warnings = warnings + "Current,";
+        }
+        output[13] = this.getDecorations();
+        if (output[13].startsWith("WARN")) {
+            warnings = warnings + "Decorations,";
+        }
+        output[14] = this.getTankSize();
+
+        if (!warnings.equals("")) {
+            output[0] = "Warnings:" + warnings;
+        }
+        return output;
+    }
+
+    public String[] tankInfo() {
+        String[] output = new String[4];
+
+        Double tankSize = 0.0;
+        String temp = "";
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (fishSchool.getFishType().getIdealNumber().equals("Any")) {
+                tankSize = tankSize + Double.valueOf(fishSchool.getFishType().getMinimumTankSize());
+                temp = temp + fishSchool.getFishType().getCommonName() + "(" + fishSchool.getFishType().getIdealNumber()
+                        + "), ";
+            } else {
+                tankSize = tankSize + (Double.valueOf(fishSchool.getAmountFish())
+                        / Double.valueOf(fishSchool.getFishType().getIdealNumber()))
+                        * Double.valueOf(fishSchool.getFishType().getMinimumTankSize());
+            }
+        }
+        output[0] = tankSize.intValue() + " gallon fish tank";
+        output[1] = "fish tank decorations";
+        output[2] = "aquarium buffer";
+        output[3] = "fish tank power head";
+        return output;
+    }
 }
