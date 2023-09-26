@@ -56,6 +56,11 @@ public class AquariumController {
         return this.AquariumServ.getAquariumCompability(id);
     }
 
+    @GetMapping("tankinfo/{id}")
+    public String[] findTankInfoById(@PathVariable String id) {
+        return this.AquariumServ.getEbaySearches(id);
+    }
+
     @PutMapping("/modify/{id}")
     public Aquarium modifyAquarium(@PathVariable String id, @RequestBody Aquarium updatedAquarium) {
         return this.AquariumServ.updateAquarium(id, updatedAquarium);

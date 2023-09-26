@@ -73,6 +73,13 @@ public class AquariumService {
             return Aquarium.get().aquariumCompatibility();
         }
         return null;
+    }
 
+    public String[] getEbaySearches(String id) {
+        Optional<Aquarium> Aquarium = AquariumRepo.findById(id);
+        if (Aquarium.isPresent()) {
+            return Aquarium.get().tankInfo();
+        }
+        return null;
     }
 }

@@ -77,15 +77,8 @@ public class Aquarium {
         return false;
     }
 
-    public String[] aquariumCompatibility() {
-        String[] output = new String[16];
-        String temp = "";
-        int fishCount = 0;
-        String warnings = "";
-
-        output[0] = "Valid Tank";
-        // carelevel
-        temp = "Easy";
+    public String getCareLevel() {
+        String temp = "Easy";
         for (FishSchool fishSchool : this.fishSchools) {
             if (temp.equals("Easy")) {
                 if (fishSchool.getFishType().getCareLevel().equals("Moderate")
@@ -101,26 +94,34 @@ public class Aquarium {
                 break;
             }
         }
-        output[1] = "Highest Care Level: " + temp;
+        return ("Highest Care Level: " + temp);
+    }
 
-        // average size
+    public String getAverageSize() {
         double sum = 0;
+        int fishCount = 0;
         for (FishSchool fishSchool : this.fishSchools) {
             sum = sum + Double.parseDouble(fishSchool.getFishType().getAverageSize())
                     * Double.valueOf(fishSchool.getAmountFish());
             fishCount = fishCount + fishSchool.getAmountFish();
         }
         sum = sum / Double.valueOf(fishCount);
-        output[2] = "Average Size: " + sum + " inches";
+        return ("Average Size: " + sum + " inches");
+    }
 
-        sum = 0;
+    public String getAverageLifeSpan() {
+        double sum = 0;
+        int fishCount = 0;
         for (FishSchool fishSchool : this.fishSchools) {
             sum = sum + Double.parseDouble(fishSchool.getFishType().getLifespan())
                     * Double.valueOf(fishSchool.getAmountFish());
+            fishCount = fishCount + fishSchool.getAmountFish();
         }
         sum = sum / Double.valueOf(fishCount);
-        output[3] = "Average Lifespan: " + sum + " years";
+        return ("Average Lifespan: " + sum + " years");
+    }
 
+    public String getpH() {
         Double phLow = null;
         Double phHigh = null;
         for (FishSchool fishSchool : this.fishSchools) {
@@ -137,12 +138,13 @@ public class Aquarium {
         }
 
         if (phHigh < phLow) {
-            warnings = warnings + "pH Range,";
-            output[4] = "WARN-No Valid pH Range";
+            return ("WARN-No Valid pH Range");
         } else {
-            output[4] = "Acceptable pH range: " + phLow.toString() + "-" + phHigh.toString();
+            return ("Acceptable pH range: " + phLow.toString() + "-" + phHigh.toString());
         }
+    }
 
+    public String getTemp() {
         Double tempLow = null;
         Double tempHigh = null;
         for (FishSchool fishSchool : this.fishSchools) {
@@ -158,12 +160,13 @@ public class Aquarium {
             }
         }
         if (tempHigh < tempLow) {
-            warnings = warnings + "Temperature Range,";
-            output[5] = "WARN-No Valid temperature Range";
+            return ("WARN-No Valid temperature Range");
         } else {
-            output[5] = "Acceptable temperature range: " + tempLow.toString() + "-" + tempHigh.toString() + "°F";
+            return ("Acceptable temperature range: " + tempLow.toString() + "-" + tempHigh.toString() + "°F");
         }
+    }
 
+    public String getHardness() {
         Double hardLow = null;
         Double hardHigh = null;
         for (FishSchool fishSchool : this.fishSchools) {
@@ -180,13 +183,14 @@ public class Aquarium {
         }
 
         if (hardHigh < hardLow) {
-            warnings = warnings + "Hardness Range,";
-            output[6] = "WARN-No Valid Hardness Range";
+            return ("WARN-No Valid Hardness Range");
         } else {
-            output[6] = "Acceptable Hardness range: " + hardLow.toString() + "-" + hardHigh.toString() + " dGh";
+            return ("Acceptable Hardness range: " + hardLow.toString() + "-" + hardHigh.toString() + " dGh");
         }
+    }
 
-        temp = "";
+    public String getSelfConflict() {
+        String temp = "";
         for (FishSchool fishSchool : this.fishSchools) {
             if (!fishSchool.getFishType().getIsAggressiveSelf().equals("Peaceful")) {
                 if (fishSchool.getAmountFish() > 1) {
@@ -195,13 +199,14 @@ public class Aquarium {
             }
         }
         if (temp.equals("")) {
-            output[7] = "No Same Species Conflicts";
+            return ("No Same Species Conflicts");
         } else {
-            output[7] = "WARN-The following species are aggressive to the same species: " + temp;
-            warnings = warnings + "Self Species Conflict,";
+            return ("WARN-The following species are aggressive to the same species: " + temp);
         }
+    }
 
-        temp = "";
+    public String getOtherConflict() {
+        String temp = "";
         for (FishSchool fishSchool : this.fishSchools) {
             if (!fishSchool.getFishType().getIsAggressiveOther().equals("Peaceful")) {
                 if (fishSchool.getFishType().getIsAggressiveOther().equals("Semi Aggressive")) {
@@ -212,21 +217,24 @@ public class Aquarium {
             }
         }
         if (temp.equals("") || this.fishSchools.size() < 2) {
-            output[8] = "No Other Species Conflicts";
+            return ("No Other Species Conflicts");
         } else {
-            output[8] = "WARN-The following species have issues with other fish species: " + temp;
-            warnings = warnings + "Other Species Conflict,";
+            return ("WARN-The following species have issues with other fish species: " + temp);
         }
+    }
 
-        output[9] = "Live Plants Needed: No";
+    public String getLivePlants() {
+        String output = "Live Plants Needed: No";
         for (FishSchool fishSchool : this.fishSchools) {
             if (fishSchool.getFishType().getLivePlants().equals("Yes")) {
-                output[9] = "Live Plants Needed: Yes";
+                output = "Live Plants Needed: Yes";
             }
         }
+        return output;
+    }
 
-        // placeholder
-        output[11] = "Substrate placeholder";
+    public String getSubstrate() {
+        String output = "Substrate placeholder";
         Set<String> substrate = new HashSet<>();
         boolean isAtLeastOne = false;
         for (FishSchool fishSchool : this.fishSchools) {
@@ -246,15 +254,15 @@ public class Aquarium {
                 } else {
                     currentSubstrate.retainAll(substrate);
                     if (currentSubstrate.size() == 0) {
-                        output[11] = "WARN-No valid substrate";
-                        warnings = warnings + "Substrate,";
+                        output = "WARN-No valid substrate";
+
                     } else {
                         substrate = currentSubstrate;
                     }
                 }
             }
         }
-        temp = "";
+        String temp = "";
         if (isAtLeastOne && substrate.size() > 0) {
             for (String possibleSubstrate : substrate) {
                 temp = temp + possibleSubstrate + ",";
@@ -263,18 +271,19 @@ public class Aquarium {
         if (!isAtLeastOne) {
             temp = "Any";
         }
-        if (!output[11].equals("WARN-No valid substrate")) {
-            output[11] = "Possible Substrates: " + temp;
+        if (!output.equals("WARN-No valid substrate")) {
+            output = "Possible Substrates: " + temp;
         }
+        return output;
+    }
 
-        temp = "";
-        temp = "Moderate";
+    public String getLight() {
+        String temp = "Moderate";
         boolean hasModerate = false;
         for (FishSchool fishSchool : this.fishSchools) {
             if (fishSchool.getFishType().getLight().equals("Low")) {
                 if (temp.equals("Moderate-High")) {
                     temp = "WARN-Wide Range of Light Needs";
-                    warnings = warnings + "Light,";
                     hasModerate = false;
                     break;
                 } else {
@@ -287,7 +296,6 @@ public class Aquarium {
             if (fishSchool.getFishType().getLight().equals("High")) {
                 if (temp.equals("Low-Moderate")) {
                     temp = "WARN-Wide Range of Light Needs";
-                    warnings = warnings + "Light,";
                     hasModerate = false;
                     break;
                 } else {
@@ -302,14 +310,15 @@ public class Aquarium {
             temp = "High";
         }
         if (temp.equals("WARN-Wide Range of Light Needs")) {
-            output[12] = temp;
+            return (temp);
         } else {
-            output[12] = "Recommended Light: " + temp;
+            return ("Recommended Light: " + temp);
         }
+    }
 
-        temp = "";
-        temp = "Moderate";
-        hasModerate = false;
+    public String getCurrent() {
+        String temp = "Moderate";
+        boolean hasModerate = false;
         for (FishSchool fishSchool : this.fishSchools) {
             if (fishSchool.getFishType().getCurrent().equals("Low")) {
                 if (temp.equals("Moderate-High")) {
@@ -340,19 +349,20 @@ public class Aquarium {
             temp = "High";
         }
         if (temp.equals("WARN-Wide Range of Current Needs")) {
-            output[13] = temp;
+            return (temp);
         } else {
-            output[13] = "Recommended Current: " + temp;
+            return ("Recommended Current: " + temp);
         }
 
-        temp = "";
-        temp = "Moderate";
-        hasModerate = false;
+    }
+
+    public String getDecorations() {
+        String temp = "Moderate";
+        boolean hasModerate = false;
         for (FishSchool fishSchool : this.fishSchools) {
             if (fishSchool.getFishType().getDecorations().equals("Low")) {
                 if (temp.equals("Moderate-High")) {
                     temp = "WARN-Wide Range of Decorations Needs";
-                    warnings = warnings + "Decorations";
                     hasModerate = false;
                     break;
                 } else {
@@ -365,7 +375,6 @@ public class Aquarium {
             if (fishSchool.getFishType().getDecorations().equals("High")) {
                 if (temp.equals("Low-Moderate")) {
                     temp = "WARN-Wide Range of Decorations Needs";
-                    warnings = warnings + "Decorations";
                     hasModerate = false;
                     break;
                 } else {
@@ -380,14 +389,15 @@ public class Aquarium {
             temp = "High";
         }
         if (temp.equals("WARN-Wide Range of Decorations Needs")) {
-            output[14] = temp;
+            return (temp);
         } else {
-            output[14] = "Recommended Decorations: " + temp;
+            return ("Recommended Decorations: " + temp);
         }
+    }
 
-        // placeholder
+    public String getTankSize() {
         Double tankSize = 0.0;
-        temp = "";
+        String temp = "";
         for (FishSchool fishSchool : this.fishSchools) {
             if (fishSchool.getFishType().getIdealNumber().equals("Any")) {
                 tankSize = tankSize + Double.valueOf(fishSchool.getFishType().getMinimumTankSize());
@@ -400,14 +410,86 @@ public class Aquarium {
             }
         }
         if (temp.equals("")) {
-            output[15] = "Tank Size: " + tankSize + " Gallons";
+            return ("Tank Size: " + tankSize + " Gallons");
         } else {
-            output[15] = "WARN-Tanksize assumes ideal number for " + temp + " Tank Size: " + tankSize + " Gallons";
+            return ("WARN-Tanksize assumes ideal number for " + temp + " Tank Size: " + tankSize + " Gallons");
         }
+
+    }
+
+    public String[] aquariumCompatibility() {
+        String[] output = new String[16];
+        String warnings = "";
+
+        output[0] = "Valid Tank";
+        output[1] = this.getCareLevel();
+        output[2] = this.getAverageSize();
+        output[3] = this.getAverageLifeSpan();
+        output[4] = this.getpH();
+        if (output[4].startsWith("WARN")) {
+            warnings = warnings + "pH,";
+        }
+        output[5] = this.getTemp();
+        if (output[5].startsWith("WARN")) {
+            warnings = warnings + "temperature,";
+        }
+        output[6] = this.getHardness();
+        if (output[6].startsWith("WARN")) {
+            warnings = warnings + "hardness,";
+        }
+        output[7] = this.getSelfConflict();
+        if (output[7].startsWith("WARN")) {
+            warnings = warnings + "Same Species Conflict,";
+        }
+        output[8] = this.getOtherConflict();
+        if (output[8].startsWith("WARN")) {
+            warnings = warnings + "Other Species Conflict,";
+        }
+        output[9] = this.getLivePlants();
+        output[10] = this.getSubstrate();
+        if (output[10].startsWith("WARN")) {
+            warnings = warnings + "Substrate,";
+        }
+        output[11] = this.getLight();
+        if (output[11].startsWith("WARN")) {
+            warnings = warnings + "Light,";
+        }
+        output[12] = this.getCurrent();
+        if (output[12].startsWith("WARN")) {
+            warnings = warnings + "Current,";
+        }
+        output[13] = this.getDecorations();
+        if (output[13].startsWith("WARN")) {
+            warnings = warnings + "Decorations,";
+        }
+        output[14] = this.getTankSize();
+
         if (!warnings.equals("")) {
             output[0] = "Warnings:" + warnings;
         }
         return output;
     }
 
+    public String[] tankInfo() {
+        String[] output = new String[4];
+
+        Double tankSize = 0.0;
+        String temp = "";
+        for (FishSchool fishSchool : this.fishSchools) {
+            if (fishSchool.getFishType().getIdealNumber().equals("Any")) {
+                tankSize = tankSize + Double.valueOf(fishSchool.getFishType().getMinimumTankSize());
+                temp = temp + fishSchool.getFishType().getCommonName() + "(" + fishSchool.getFishType().getIdealNumber()
+                        + "), ";
+            } else {
+                tankSize = tankSize + (Double.valueOf(fishSchool.getAmountFish())
+                        / Double.valueOf(fishSchool.getFishType().getIdealNumber()))
+                        * Double.valueOf(fishSchool.getFishType().getMinimumTankSize());
+            }
+        }
+        output[0] = tankSize.intValue() + " gallon fish tank";
+        output[1] = "fish tank decorations";
+        output[2] = "aquarium buffer";
+        output[3] = "fish tank power head";
+        return output;
+    }
 }

@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { UserContext } from '../UserContext';
 import { useNavigate } from "react-router-dom";
 import fish from '../FishImages/download.jpg'
+import EbayRequest from "./ApiRequest";
 
 import AfricanCichlid1Img from '../FishImages/AfricanCichlids1.jpg'
 import AfricanCichlid2Img from '../FishImages/AfricanCichlids2.jpg'
@@ -49,6 +50,19 @@ const AquariumPage = ({ aquarium }) => {
       .catch(error => console.error('Error fetching data:', error));
   }, []); 
 
+  const [ebaySearches, setebaySearches] = useState([]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8080/aquariums/tankinfo/'+aquarium.name)
+      .then(response => response.json())
+      .then(data => {
+        setebaySearches(data);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, []); 
+
+  console.log(ebaySearches);
+
   let additionalInfo = null;
   if (stringArray.length > 0) {
     const firstElement = stringArray[0];
@@ -70,18 +84,22 @@ const AquariumPage = ({ aquarium }) => {
                   <li key={fishSchool.name}>
                     <img src={imageMap[fishSchool.fishType.picUrl]} alt={`${"error"} image`} className="w-20 h-20 rounded-full mr-2" /> 
                     Fish Species: {fishSchool.fishType.commonName} <br />
+                    <EbayRequest keyword={fishSchool.fishType.commonName} info="false"/>
                     Fish Amount: {fishSchool.amountFish}
                   </li>
                 ))}
               </ul>
               <div>
                 {additionalInfo}
-                <h3>String Array:</h3>
+                <h3>Tank Information:</h3>
                 <ul>
                   {stringArray.map((item, index) => (
                     <li key={index}>{item}</li>
                   ))}
                 </ul>
+                {ebaySearches.map((keyword, index) => (
+                  <EbayRequest key={index} keyword={keyword} info="true" />
+                ))}
               </div>
             </div>
           </div>
