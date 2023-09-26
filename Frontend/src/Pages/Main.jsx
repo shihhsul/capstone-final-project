@@ -99,14 +99,13 @@ const Main = () => {
   
       {userData && (
         <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h2 className="text-xl font-semibold mb-4">Hello {userData.fullName}</h2>
           <h2 className="text-xl font-semibold mb-4">User Data</h2>
-          <p className="mb-2"><span className="font-medium">ID:</span> {userData.id}</p>
           <p className="mb-2"><span className="font-medium">Username:</span> {userData.userName}</p>
-          <p className="mb-2"><span className="font-medium">Password:</span> {userData.password}</p>
           <p className="mb-2"><span className="font-medium">Full Name:</span> {userData.fullName}</p>
           <p className="mb-4"><span className="font-medium">Email:</span> {userData.email}</p>
   
-          <h2 className="text-xl font-semibold mb-4">Aquariums</h2>
+          <h2 className="text-xl font-semibold mb-4">Your Aquariums</h2>
           <ul>
             {userData.aquariums && userData.aquariums.map((aquarium, index) => (
               <li key={index} className="cursor-pointer hover:bg-gray-200 p-2 rounded" onClick={() => handleAquariumSelect(aquarium)}>
@@ -129,7 +128,7 @@ const Main = () => {
         <h2 className="text-xl font-semibold mb-4">Actions</h2>
         <button className="bg-blue-500 text-white p-2 rounded mr-2 hover:bg-blue-600" onClick={handleNew}>New</button>
         <button className="bg-yellow-500 text-white p-2 rounded mr-2 hover:bg-yellow-600" onClick={handleEdit}>Edit</button>
-        <button className="bg-red-500 text-white p-2 rounded hover:bg-red-600" onClick={handleDelete}>Delete</button>
+        <button className="bg-red-500 text-white p-2 rounded p-2 rounded mr-2 hover:bg-red-600" onClick={handleDelete}>Delete</button>
         <button className="bg-green-500 text-white p-2 rounded hover:bg-green-600" onClick={handleView}>View</button>
       </div>
   

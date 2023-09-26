@@ -265,38 +265,37 @@ const AquariumPage = ({ aquarium }) => {
   </div>
 )}
 
-          {selectedFishSchool && (
-            <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
-              <h3>Viewing Fish School: {selectedFishSchool.name}</h3>
-              <img src={imageMap[selectedFishSchool.fishType.picUrl]}  alt={`${"error"} image`} className="w-20 h-20 rounded-full mr-2" /> 
-              <h3>Species Information:</h3>
-              <p>Fish Name: {selectedFishSchool.fishType.commonName}</p>
-              <p>Scientific Name: {selectedFishSchool.fishType.scientificName}</p>
-              <p>Species Group: {selectedFishSchool.fishType.speciesGroup}</p>
-              <p>Lifespan: {selectedFishSchool.fishType.lifespan}</p>
-              <p>Average Size: {selectedFishSchool.fishType.averageSize}</p>
+    {selectedFishSchool && (
+      <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
+        <h3 style={{ fontWeight: 'bold' }}>Viewing Fish School: {selectedFishSchool.name}</h3>
+        <img src={imageMap[selectedFishSchool.fishType.picUrl]} alt={`${"error"} image`} className="w-20 h-20 rounded-full mr-2" />
+        <h3 style={{ fontWeight: 'bold' }}>Species Information:</h3>
+        <p><span style={{ fontWeight: 'bold' }}>Fish Name:</span> {selectedFishSchool.fishType.commonName}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Scientific Name:</span> {selectedFishSchool.fishType.scientificName}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Species Group:</span> {selectedFishSchool.fishType.speciesGroup}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Lifespan:</span> {selectedFishSchool.fishType.lifespan}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Average Size:</span> {selectedFishSchool.fishType.averageSize}</p>
+        <h3 style={{ fontWeight: 'bold' }}>Fish Care Details</h3>
+        <p><span style={{ fontWeight: 'bold' }}>Care Level:</span> {selectedFishSchool.fishType.careLevel}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Food Options:</span> {selectedFishSchool.fishType.foodOptions}</p>
+        <p><span style={{ fontWeight: 'bold' }}>FoodType:</span> {selectedFishSchool.fishType.foodType}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Ideal Number:</span> {selectedFishSchool.fishType.idealNumber}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Aggressive to other Species?:</span> {selectedFishSchool.fishType.isAggressiveOther}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Aggressive to same Species?:</span> {selectedFishSchool.fishType.isAggressiveSelf}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Swimming Level:</span> {selectedFishSchool.fishType.swimmingLevel}</p>
+        <h3 style={{ fontWeight: 'bold' }}>Tank Requirements:</h3>
+        <p><span style={{ fontWeight: 'bold' }}>Temperature Range:</span> {selectedFishSchool.fishType.tempLow}-{selectedFishSchool.fishType.tempHigh} °F</p>
+        <p><span style={{ fontWeight: 'bold' }}>pH Range:</span> {selectedFishSchool.fishType.phLow}-{selectedFishSchool.fishType.phHigh}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Water Hardness:</span> {selectedFishSchool.fishType.hardLow}-{selectedFishSchool.fishType.hardHigh}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Minimum Tank Size:</span> {selectedFishSchool.fishType.minimumTankSize}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Substrate:</span> {selectedFishSchool.fishType.substrate}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Light Level:</span> {selectedFishSchool.fishType.light}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Live Plants:</span> {selectedFishSchool.fishType.livePlants}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Current Level:</span> {selectedFishSchool.fishType.current}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Decorations Present:</span> {selectedFishSchool.fishType.decorations}</p>
+      </div>
+    )}
 
-              <h3>Fish Care Details</h3>
-              <p>Care Level: {selectedFishSchool.fishType.careLevel}</p>
-              <p>Food Options: {selectedFishSchool.fishType.foodOptions}</p>
-              <p>FoodType: {selectedFishSchool.fishType.foodType}</p>
-              <p>Ideal Number: {selectedFishSchool.fishType.idealNumber}</p>
-              <p>Aggressive to other Species?: {selectedFishSchool.fishType.isAggressiveOther}</p>
-              <p>Aggressive to same Species?: {selectedFishSchool.fishType.isAggressiveSelf}</p>
-              <p>Swimming Level: {selectedFishSchool.fishType.swimmingLevel}</p>
-
-              <h3>Tank Requirements:</h3>
-              <p>Temperature Range: {selectedFishSchool.fishType.tempLow}-{selectedFishSchool.fishType.tempHigh} °F</p>
-              <p>pH Range: {selectedFishSchool.fishType.phLow}-{selectedFishSchool.fishType.phHigh}</p>
-              <p>Water Hardness: {selectedFishSchool.fishType.hardLow}-{selectedFishSchool.fishType.hardHigh}</p>
-              <p>Minimum Tank Size: {selectedFishSchool.fishType.minimumTankSize}</p>
-              <p>Substrate: {selectedFishSchool.fishType.substrate}</p>
-              <p>Light Level: {selectedFishSchool.fishType.light}</p>
-              <p>Live Plants: {selectedFishSchool.fishType.livePlants}</p>
-              <p>Current Level: {selectedFishSchool.fishType.current}</p>
-              <p>Decorations Present: {selectedFishSchool.fishType.decorations}</p>
-            </div>
-          )}
           {isDialogOpen && (
       <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
         <div className="dialog-content bg-white p-8 rounded-lg shadow-xl w-1/3">

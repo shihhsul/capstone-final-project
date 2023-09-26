@@ -14,23 +14,14 @@ public class FishService {
     @Autowired
     private FishRepository FishRepo;
 
-    /*
-     * Adds a new Fish to the repository (db). The "C" (create) in CRUD
-     */
     public void createFish(Fish Fish) {
         this.FishRepo.save(Fish);
     }
 
-    /*
-     * Gets all the Fishs in the repo (db). The "R" (read) in CRUD
-     */
     public List<Fish> getAllFishs() {
         return FishRepo.findAll();
     }
 
-    /*
-     * Gets a specific Fish by its id. The "R" (read) in CRUD
-     */
     public Fish getFishById(String id) {
 
         Optional<Fish> Fish = FishRepo.findById(id);
@@ -40,9 +31,6 @@ public class FishService {
         return null;
     }
 
-    /*
-     * Delete a Fish from the repo. The "D" (delete) in CRUD
-     */
     public boolean deleteFishById(String id) {
         if (FishRepo.existsById(id)) {
             FishRepo.deleteById(id);

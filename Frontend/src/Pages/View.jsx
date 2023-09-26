@@ -1,8 +1,5 @@
 import React, { useContext, useState,useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { UserContext } from '../UserContext';
-import { useNavigate } from "react-router-dom";
-import fish from '../FishImages/download.jpg'
 import EbayRequest from "./ApiRequest";
 
 import AfricanCichlid1Img from '../FishImages/AfricanCichlids1.jpg';
