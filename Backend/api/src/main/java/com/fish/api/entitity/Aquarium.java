@@ -4,14 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.hibernate.result.Output;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -124,68 +119,80 @@ public class Aquarium {
     public String getpH() {
         Double phLow = null;
         Double phHigh = null;
+
         for (FishSchool fishSchool : this.fishSchools) {
-            if (phLow == null) {
-                phLow = Double.valueOf(fishSchool.getFishType().getPhLow());
-                phHigh = Double.valueOf(fishSchool.getFishType().getPhHigh());
+            Double fishPhLow = parseDouble(fishSchool.getFishType().getPhLow());
+            Double fishPhHigh = parseDouble(fishSchool.getFishType().getPhHigh());
+
+            if (isValueValid(fishPhLow) && (phLow == null || fishPhLow > phLow)) {
+                phLow = fishPhLow;
             }
-            if (phLow < Double.valueOf(fishSchool.getFishType().getPhLow())) {
-                phLow = Double.valueOf(fishSchool.getFishType().getPhLow());
-            }
-            if (phHigh > Double.valueOf(fishSchool.getFishType().getPhHigh())) {
-                phHigh = Double.valueOf(fishSchool.getFishType().getPhHigh());
+
+            if (isValueValid(fishPhHigh) && (phHigh == null || fishPhHigh < phHigh)) {
+                phHigh = fishPhHigh;
             }
         }
 
-        if (phHigh < phLow) {
-            return ("WARN-No Valid pH Range");
-        } else {
-            return ("Acceptable pH range: " + phLow.toString() + "-" + phHigh.toString());
-        }
+        return calculateRange("pH", phLow, phHigh);
     }
 
     public String getTemp() {
         Double tempLow = null;
         Double tempHigh = null;
+
         for (FishSchool fishSchool : this.fishSchools) {
-            if (tempLow == null) {
-                tempLow = Double.valueOf(fishSchool.getFishType().getTempLow());
-                tempHigh = Double.valueOf(fishSchool.getFishType().getTempHigh());
+            Double fishTempLow = parseDouble(fishSchool.getFishType().getTempLow());
+            Double fishTempHigh = parseDouble(fishSchool.getFishType().getTempHigh());
+
+            if (isValueValid(fishTempLow) && (tempLow == null || fishTempLow > tempLow)) {
+                tempLow = fishTempLow;
             }
-            if (tempLow < Double.valueOf(fishSchool.getFishType().getTempLow())) {
-                tempLow = Double.valueOf(fishSchool.getFishType().getTempLow());
-            }
-            if (tempHigh > Double.valueOf(fishSchool.getFishType().getTempHigh())) {
-                tempHigh = Double.valueOf(fishSchool.getFishType().getTempHigh());
+
+            if (isValueValid(fishTempHigh) && (tempHigh == null || fishTempHigh < tempHigh)) {
+                tempHigh = fishTempHigh;
             }
         }
-        if (tempHigh < tempLow) {
-            return ("WARN-No Valid temperature Range");
-        } else {
-            return ("Acceptable temperature range: " + tempLow.toString() + "-" + tempHigh.toString() + "°F");
-        }
+
+        return calculateRange("temperature", tempLow, tempHigh);
     }
 
     public String getHardness() {
         Double hardLow = null;
         Double hardHigh = null;
+
         for (FishSchool fishSchool : this.fishSchools) {
-            if (hardLow == null) {
-                hardLow = Double.valueOf(fishSchool.getFishType().getHardLow());
-                hardHigh = Double.valueOf(fishSchool.getFishType().getHardHigh());
+            Double fishHardLow = parseDouble(fishSchool.getFishType().getHardLow());
+            Double fishHardHigh = parseDouble(fishSchool.getFishType().getHardHigh());
+
+            if (isValueValid(fishHardLow) && (hardLow == null || fishHardLow > hardLow)) {
+                hardLow = fishHardLow;
             }
-            if (hardLow < Double.valueOf(fishSchool.getFishType().getHardLow())) {
-                hardLow = Double.valueOf(fishSchool.getFishType().getHardLow());
-            }
-            if (hardHigh > Double.valueOf(fishSchool.getFishType().getHardHigh())) {
-                hardHigh = Double.valueOf(fishSchool.getFishType().getHardHigh());
+
+            if (isValueValid(fishHardHigh) && (hardHigh == null || fishHardHigh < hardHigh)) {
+                hardHigh = fishHardHigh;
             }
         }
 
-        if (hardHigh < hardLow) {
-            return ("WARN-No Valid Hardness Range");
+        return calculateRange("hardness", hardLow, hardHigh);
+    }
+
+    private Double parseDouble(String value) {
+        try {
+            return value != null ? Double.parseDouble(value) : null;
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private boolean isValueValid(Double value) {
+        return value != null && !Double.isNaN(value) && !Double.isInfinite(value);
+    }
+
+    private String calculateRange(String parameter, Double low, Double high) {
+        if (isValueValid(low) && isValueValid(high) && low <= high) {
+            return "Acceptable " + parameter + " range: " + low + "-" + high;
         } else {
-            return ("Acceptable Hardness range: " + hardLow.toString() + "-" + hardHigh.toString() + " dGh");
+            return "WARN-No Valid " + parameter + " Range";
         }
     }
 

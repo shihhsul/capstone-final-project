@@ -4,11 +4,11 @@ import { UserContext } from '../UserContext';
 import { useNavigate } from "react-router-dom";
 import fish from '../FishImages/download.jpg'
 
-import AfricanCichlid1Img from '../FishImages/AfricanCichlids1.jpg'
-import AfricanCichlid2Img from '../FishImages/AfricanCichlids2.jpg'
-import AfricanCichlid3Img from '../FishImages/AfricanCichlids3.jpg'
-import AfricanCichlid4Img from '../FishImages/AfricanCichlids4.jpg'
-import AfricanCichlid5Img from '../FishImages/AfricanCichlids5.jpg'
+import AfricanCichlid1Img from '../FishImages/AfricanCichlids1.jpg';
+import AfricanCichlid2Img from '../FishImages/AfricanCichlids2.jpg';
+import AfricanCichlid3Img from '../FishImages/AfricanCichlids3.jpg';
+import AfricanCichlid4Img from '../FishImages/AfricanCichlids4.jpg';
+import AfricanCichlid5Img from '../FishImages/AfricanCichlids5.jpg';
 import AmericanCichlid1Img from '../FishImages/AmericanCichlids1.jpg';
 import AmericanCichlid2Img from '../FishImages/AmericanCichlids2.jpg';
 import AmericanCichlid3Img from '../FishImages/AmericanCichlids3.jpg';
@@ -16,6 +16,13 @@ import AmericanCichlid4Img from '../FishImages/AmericanCichlids4.jpg';
 import AmericanCichlid5Img from '../FishImages/AmericanCichlids5.jpg';
 import Angelfish1Img from '../FishImages/Angelfish1.jpg';
 import Angelfish2Img from '../FishImages/Angelfish2.jpg';
+import Betta1Img from '../FishImages/Bettas1.jpg';
+import Betta2Img from '../FishImages/Bettas2.jpg';
+import Betta3Img from '../FishImages/Bettas3.jpg';
+import Eels1Img from '../FishImages/Eels1.jpg';
+import Eels2Img from '../FishImages/Eels2.jpg';
+import Eels3Img from '../FishImages/Eels3.jpg';
+import Koi1Img from '../FishImages/Koi1.jpg';
 
 const imageMap = {
   "AfricanCichlids1": AfricanCichlid1Img,
@@ -30,7 +37,15 @@ const imageMap = {
   "AmericanCichlids5": AmericanCichlid5Img,
   "Angelfish1": Angelfish1Img,
   "Angelfish2": Angelfish2Img,
+  "Bettas1": Betta1Img,
+  "Bettas2": Betta2Img,
+  "Bettas3": Betta3Img,
+  "Eels1": Eels1Img,
+  "Eels2": Eels2Img,
+  "Eels3": Eels3Img,
+  "Koi1": Koi1Img,
 };
+
 
 
 const AquariumPage = ({ aquarium }) => {
@@ -45,6 +60,9 @@ const AquariumPage = ({ aquarium }) => {
   const [fishTypes, setFishTypes] = useState([]);
   const [isFishTypeListVisible, setIsFishTypeListVisible] = useState(false);
   const [editedFishSchool, setEditedFishSchool] = useState(null);
+
+  const [isFishSpeciesListVisible, setIsFishSpeciesListVisible] = useState(false);
+  const [selectedSpecies, setSelectedSpecies] = useState(null);
 
   useEffect(() => {
     const fetchFishTypes = async () => {
@@ -104,9 +122,14 @@ const AquariumPage = ({ aquarium }) => {
     };
 
     const handleNew = () => {
-      setIsFishTypeListVisible(true);
+      setIsFishSpeciesListVisible(true);
     };
 
+    const handleFishSpeciesSelect = (fishSpecies) => {
+      setIsFishSpeciesListVisible(false);
+      setSelectedSpecies(fishSpecies);
+      setIsFishTypeListVisible(true);
+    }
     const handleFishTypeSelect = async (fishType) => {
       try {
         const response = await fetch(`http://127.0.0.1:8080/fishschools/new/${aquarium.name}`, {
@@ -130,7 +153,7 @@ const AquariumPage = ({ aquarium }) => {
       } catch (error) {
           console.error("There was a problem with the save request", error);
         }
-      
+        setIsFishTypeListVisible(false);
     };
 
     const handleDialogSave = async () => {
@@ -204,15 +227,34 @@ const AquariumPage = ({ aquarium }) => {
       <button className="bg-red-500 text-white p-2 rounded hover:bg-red-600" onClick={() => handleDelete(selectedFishSchool)}>Delete</button>
     </div>
 
+    {isFishSpeciesListVisible&& (
+    <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
+    <h3 className="text-lg font-semibold mb-4">Fish Types</h3>
+    <ul>
+    {[...new Set(fishTypes.map(fishType => fishType.speciesGroup))]
+        .map((speciesGroup) => (
+        <li key={speciesGroup} className="mb-2">
+          <div className="flex items-center">
+            <button className="text-blue-600 hover:underline" onClick={() => handleFishSpeciesSelect(speciesGroup)}>
+              {speciesGroup}
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
     {isFishTypeListVisible && (
   <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
     <h3 className="text-lg font-semibold mb-4">Fish Types</h3>
     <ul>
-      {fishTypes.map((fishType) => (
+    {fishTypes
+        .filter((fishType) => fishType.speciesGroup === selectedSpecies) 
+        .map((fishType) => (
         <li key={fishType.commonName} className="mb-2">
           <div className="flex items-center">
           <img src={imageMap[fishType.picUrl]} alt={`${fishType.commonName} image`} className="w-20 h-20 rounded-full mr-2" /> 
-            {/* <img src={fishType.pictureUrl} alt={`${fishType.commonName} image`} className="w-20 h-20 rounded-full mr-2" /> */}
             <button className="text-blue-600 hover:underline" onClick={() => handleFishTypeSelect(fishType.commonName)}>
               {fishType.commonName}
             </button>
@@ -223,38 +265,37 @@ const AquariumPage = ({ aquarium }) => {
   </div>
 )}
 
-          {selectedFishSchool && (
-            <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
-              <h3>Viewing Fish School: {selectedFishSchool.name}</h3>
-              <img src={imageMap[selectedFishSchool.fishType.picUrl]}  alt={`${"error"} image`} className="w-20 h-20 rounded-full mr-2" /> 
-              <h3>Species Information:</h3>
-              <p>Fish Name: {selectedFishSchool.fishType.commonName}</p>
-              <p>Scientific Name: {selectedFishSchool.fishType.scientificName}</p>
-              <p>Species Group: {selectedFishSchool.fishType.speciesGroup}</p>
-              <p>Lifespan: {selectedFishSchool.fishType.lifespan}</p>
-              <p>Average Size: {selectedFishSchool.fishType.averageSize}</p>
+    {selectedFishSchool && (
+      <div className="bg-gradient-to-br from-white to-blue-100 border border-blue-200 p-6 rounded-lg shadow-2xl mb-8">
+        <h3 style={{ fontWeight: 'bold' }}>Viewing Fish School: {selectedFishSchool.name}</h3>
+        <img src={imageMap[selectedFishSchool.fishType.picUrl]} alt={`${"error"} image`} className="w-20 h-20 rounded-full mr-2" />
+        <h3 style={{ fontWeight: 'bold' }}>Species Information:</h3>
+        <p><span style={{ fontWeight: 'bold' }}>Fish Name:</span> {selectedFishSchool.fishType.commonName}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Scientific Name:</span> {selectedFishSchool.fishType.scientificName}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Species Group:</span> {selectedFishSchool.fishType.speciesGroup}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Lifespan:</span> {selectedFishSchool.fishType.lifespan}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Average Size:</span> {selectedFishSchool.fishType.averageSize}</p>
+        <h3 style={{ fontWeight: 'bold' }}>Fish Care Details</h3>
+        <p><span style={{ fontWeight: 'bold' }}>Care Level:</span> {selectedFishSchool.fishType.careLevel}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Food Options:</span> {selectedFishSchool.fishType.foodOptions}</p>
+        <p><span style={{ fontWeight: 'bold' }}>FoodType:</span> {selectedFishSchool.fishType.foodType}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Ideal Number:</span> {selectedFishSchool.fishType.idealNumber}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Aggressive to other Species?:</span> {selectedFishSchool.fishType.isAggressiveOther}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Aggressive to same Species?:</span> {selectedFishSchool.fishType.isAggressiveSelf}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Swimming Level:</span> {selectedFishSchool.fishType.swimmingLevel}</p>
+        <h3 style={{ fontWeight: 'bold' }}>Tank Requirements:</h3>
+        <p><span style={{ fontWeight: 'bold' }}>Temperature Range:</span> {selectedFishSchool.fishType.tempLow}-{selectedFishSchool.fishType.tempHigh} °F</p>
+        <p><span style={{ fontWeight: 'bold' }}>pH Range:</span> {selectedFishSchool.fishType.phLow}-{selectedFishSchool.fishType.phHigh}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Water Hardness:</span> {selectedFishSchool.fishType.hardLow}-{selectedFishSchool.fishType.hardHigh}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Minimum Tank Size:</span> {selectedFishSchool.fishType.minimumTankSize}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Substrate:</span> {selectedFishSchool.fishType.substrate}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Light Level:</span> {selectedFishSchool.fishType.light}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Live Plants:</span> {selectedFishSchool.fishType.livePlants}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Current Level:</span> {selectedFishSchool.fishType.current}</p>
+        <p><span style={{ fontWeight: 'bold' }}>Decorations Present:</span> {selectedFishSchool.fishType.decorations}</p>
+      </div>
+    )}
 
-              <h3>Fish Care Details</h3>
-              <p>Care Level: {selectedFishSchool.fishType.careLevel}</p>
-              <p>Food Options: {selectedFishSchool.fishType.foodOptions}</p>
-              <p>FoodType: {selectedFishSchool.fishType.foodType}</p>
-              <p>Ideal Number: {selectedFishSchool.fishType.idealNumber}</p>
-              <p>Aggressive to other Species?: {selectedFishSchool.fishType.isAggressiveOther}</p>
-              <p>Aggressive to same Species?: {selectedFishSchool.fishType.isAggressiveSelf}</p>
-              <p>Swimming Level: {selectedFishSchool.fishType.swimmingLevel}</p>
-
-              <h3>Tank Requirements:</h3>
-              <p>Temperature Range: {selectedFishSchool.fishType.tempLow}-{selectedFishSchool.fishType.tempHigh} °F</p>
-              <p>pH Range: {selectedFishSchool.fishType.phLow}-{selectedFishSchool.fishType.phHigh}</p>
-              <p>Water Hardness: {selectedFishSchool.fishType.hardLow}-{selectedFishSchool.fishType.hardHigh}</p>
-              <p>Minimum Tank Size: {selectedFishSchool.fishType.minimumTankSize}</p>
-              <p>Substrate: {selectedFishSchool.fishType.substrate}</p>
-              <p>Light Level: {selectedFishSchool.fishType.light}</p>
-              <p>Live Plants: {selectedFishSchool.fishType.livePlants}</p>
-              <p>Current Level: {selectedFishSchool.fishType.current}</p>
-              <p>Decorations Present: {selectedFishSchool.fishType.decorations}</p>
-            </div>
-          )}
           {isDialogOpen && (
       <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
         <div className="dialog-content bg-white p-8 rounded-lg shadow-xl w-1/3">
