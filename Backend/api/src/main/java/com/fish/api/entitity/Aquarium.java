@@ -93,7 +93,7 @@ public class Aquarium {
     }
 
     public String getAverageSize() {
-        double sum = 0;
+        Double sum = 0.0;
         int fishCount = 0;
         for (FishSchool fishSchool : this.fishSchools) {
             sum = sum + Double.parseDouble(fishSchool.getFishType().getAverageSize())
@@ -101,11 +101,11 @@ public class Aquarium {
             fishCount = fishCount + fishSchool.getAmountFish();
         }
         sum = sum / Double.valueOf(fishCount);
-        return ("Average Size: " + sum + " inches");
+        return ("Average Size: " + sum.intValue() + " inches");
     }
 
     public String getAverageLifeSpan() {
-        double sum = 0;
+        Double sum = 0.0;
         int fishCount = 0;
         for (FishSchool fishSchool : this.fishSchools) {
             sum = sum + Double.parseDouble(fishSchool.getFishType().getLifespan())
@@ -113,7 +113,7 @@ public class Aquarium {
             fishCount = fishCount + fishSchool.getAmountFish();
         }
         sum = sum / Double.valueOf(fishCount);
-        return ("Average Lifespan: " + sum + " years");
+        return ("Average Lifespan: " + sum.intValue() + " years");
     }
 
     public String getpH() {
@@ -417,9 +417,10 @@ public class Aquarium {
             }
         }
         if (temp.equals("")) {
-            return ("Tank Size: " + tankSize + " Gallons");
+            return ("Tank Size: " + tankSize.intValue() + " Gallons");
         } else {
-            return ("WARN-Tanksize assumes ideal number for " + temp + " Tank Size: " + tankSize + " Gallons");
+            return ("WARN-Tanksize assumes ideal number for " + temp + " Tank Size: " + tankSize.intValue()
+                    + " Gallons");
         }
 
     }
