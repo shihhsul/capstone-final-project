@@ -10,3 +10,10 @@ Texas Cichlid,Herichthys cyanoguttatus,American Cichlids,Difficult,12,15,6.5,8.0
 Threadfin Acara,Acarichthys heckelii,American Cichlids,Moderate,8,7,6.0,8.0,75,86,4,12,Mid,Peaceful,Semi Aggressive,Any,No,Omnivore,Flakes/Pellets/Live/Frozen/Veggies,Sand,Moderate,Moderate,Moderate,55,AmericanCichlids5
 Angelfish,Pterophyllumscalare,Angelfish,Easy,6,8,6,7.4,76,86,0,15,Mid,Semi Aggressive,Semi Aggressive,Any,Yes,Omnivore,Flakes/Pellets/Live/Frozen,Any,Moderate,Low,Moderate,29,Angelfish1
 Altum Angelfish,Pterophyllum altum,Angelfish,Difficult,7,15,4.8,6.2,82,90,0,5,Mid,Semi Aggressive,Semi Aggressive,Any,Yes,Omnivore,Flakes/Pellets/Live/Frozen,Any,Low,Low,Moderate,40,Angelfish2
+Emerald Betta,Betta smaragdina,Bettas,Easy,2.0,2,5.5,7.5,71,82,1,15,Mid,Peaceful,Peaceful,1,Yes,Carnivore,Live/Frozen,Any,Low,Low,Moderate,5,Bettas1
+Crescent Betta,Betta imbellis,Bettas,Easy,2.5,4,5.0,7.5,68,82,1,10,Mid,Peaceful,Peaceful,1,Yes,Carnivore,Live/Frozen,Any,Low,Low,Moderate,10,Bettas2
+Betta,Betta splendens,Bettas,Easy,2.5,3,6.0,8.0,72,86,1,15,Mid,Aggressive,Peaceful,1,Yes,Carnivore,Live/Frozen,Any,Low,Low,Moderate,5,Bettas3
+Tire Track Eel,Mastacembelus armatus,Eels,Moderate,36,7,6.0,7.5,72,82,5,18,Bottom,Aggressive,Peaceful,1,Yes,Carnivore,Live/Frozen,Sand,Moderate,Moderate,High,125,Eels1
+Peacock Eel,Macrognathus siamensis,Eels,Moderate,12.0,7,6.0,8.0,73,82,6,25,Bottom,Peaceful,Peaceful,Any,Yes,Carnivore,Live/Frozen,Sand,Low,Moderate,Moderate,29,Eels2
+Fire Eel,Mastacembelus erythrotaenia,Eels,Moderate,36.0,9,6.0,8.0,75,82,5,15,Bottom,Semi Aggressive,Semi Aggressive,1,Yes,Carnivore,Live/Frozen,Sand,Moderate,Moderate,Moderate,125,Eels3
+Koi,Cyprinus carpio,Butterfly Koi,Moderate,36,40,6.5,7.5,36,85,5,15,Top,Peaceful,Peaceful,8,No,Omnivore,Pellets,Any,Moderate,Moderate,None,1000,Koi1
