@@ -1,0 +1,5 @@
+.list {
+    display: grid;
+    grid-template-columns: 1fr; /* Only one item per row */
+    gap: 1rem; /* Gap between rows */
+  }
