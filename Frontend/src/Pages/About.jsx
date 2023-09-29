@@ -1,5 +1,4 @@
 import AboutList from "../About Components/AboutList";
-import logo from "../App Components/anglerfish.png";
 
 const About = () => {
   const STUDENT_DATA = [
@@ -40,7 +39,6 @@ const About = () => {
         <ul>
           <AboutList abouts={STUDENT_DATA} />
         </ul>
-        <img src={logo} className="w-20 h-20 bottom-0 right-20 static" alt="cute fish" />
       </div>
     </section>
   );
